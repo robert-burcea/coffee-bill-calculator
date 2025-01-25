@@ -9,28 +9,41 @@ interface ProductGridProps {
 }
 
 export const ProductGrid = ({ products, currentBill, onProductClick }: ProductGridProps) => {
-  const isProductInBill = (product: Product) => {
-    return currentBill.some(item => item.product.id === product.id);
+  const getProductQuantity = (product: Product) => {
+    return currentBill.reduce((total, item) => {
+      if (item.product.id === product.id) {
+        return total + item.quantity;
+      }
+      return total;
+    }, 0);
   };
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
-      {products.map((product) => (
-        <button
-          key={product.id}
-          onClick={() => onProductClick(product)}
-          className={cn(
-            "p-4 rounded-lg transition-all duration-200 text-sm font-medium text-center",
-            "hover:shadow-md active:scale-95",
-            isProductInBill(product)
-              ? "bg-green-500 text-white"
-              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-          )}
-        >
-          <div className="font-bold mb-1">{product.name}</div>
-          <div>{product.price} RON</div>
-        </button>
-      ))}
+      {products.map((product) => {
+        const quantity = getProductQuantity(product);
+        return (
+          <button
+            key={product.id}
+            onClick={() => onProductClick(product)}
+            className={cn(
+              "p-4 rounded-lg transition-all duration-200 text-sm font-medium text-center relative min-h-[80px]",
+              "hover:shadow-md active:scale-95",
+              quantity > 0
+                ? "bg-green-500 text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            )}
+          >
+            {quantity > 0 && (
+              <span className="absolute top-1 right-1 bg-white text-green-600 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                {quantity}
+              </span>
+            )}
+            <div className="font-bold mb-1">{product.name}</div>
+            <div>{product.price} RON</div>
+          </button>
+        )}
+      )}
     </div>
   );
 };
