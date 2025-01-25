@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, ScrollText } from "lucide-react";
 import {
   getProducts,
   getBills,
@@ -23,6 +23,7 @@ import {
   initializeProducts,
 } from "@/utils/storage";
 import { useToast } from "@/components/ui/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Index = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -112,85 +113,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Calculator Preț</h1>
-          <div className="flex gap-2">
-            <div className="block md:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Menu className="h-4 w-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>Meniu</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-4 space-y-2">
-                    <Button
-                      onClick={() => setConfirmDeleteLast(true)}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Sterge ultimul bon
-                    </Button>
-                    <Button
-                      onClick={() => setShowBillHistory(true)}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Evidenta bonuri
-                    </Button>
-                    <Button
-                      onClick={() => setConfirmClearDay(true)}
-                      variant="outline"
-                      className="w-full text-red-500 hover:text-red-700"
-                    >
-                      Sterge zi
-                    </Button>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-            <Button
-              onClick={handleCheckout}
-              className="bg-green-500 hover:bg-green-600"
-            >
-              Achita
-            </Button>
-            <Button
-              onClick={() => setShowDailyTotal((prev) => !prev)}
-              variant="outline"
-            >
-              Total zi
-            </Button>
-            <div className="hidden md:flex gap-2">
-              <Button
-                onClick={() => setConfirmDeleteLast(true)}
-                variant="outline"
-              >
-                Sterge ultimul bon
-              </Button>
-              <Button
-                onClick={() => setShowBillHistory(true)}
-                variant="outline"
-              >
-                Evidenta bonuri
-              </Button>
-              <Button
-                onClick={() => setConfirmClearDay(true)}
-                variant="outline"
-                className="text-red-500 hover:text-red-700"
-              >
-                Sterge zi
-              </Button>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold">Spoonful Coffee</h1>
         </div>
 
-        <div className="grid md:grid-cols-[2fr,1fr] gap-6">
+        <div className="grid md:grid-cols-[2fr,1fr] gap-6 mb-20">
           <div>
             <ProductGrid
               products={products}
@@ -203,27 +132,111 @@ const Index = () => {
               items={currentBill}
               onRemoveItem={handleRemoveItem}
             />
-            {showDailyTotal && <DailyTotal bills={bills} />}
-            {showBillHistory && <BillHistory bills={bills} />}
+            {showDailyTotal && (
+              <ScrollArea className="h-[300px]">
+                <DailyTotal bills={bills} />
+              </ScrollArea>
+            )}
+            {showBillHistory && (
+              <ScrollArea className="h-[300px]">
+                <BillHistory bills={[...bills].reverse()} />
+              </ScrollArea>
+            )}
           </div>
         </div>
-
-        <ConfirmDialog
-          isOpen={confirmClearDay}
-          onConfirm={handleClearDay}
-          onCancel={() => setConfirmClearDay(false)}
-          title="Confirmare"
-          description="Ești sigur că vrei să ștergi ziua fiscală?"
-        />
-
-        <ConfirmDialog
-          isOpen={confirmDeleteLast}
-          onConfirm={handleDeleteLastBill}
-          onCancel={() => setConfirmDeleteLast(false)}
-          title="Confirmare"
-          description="Ești sigur că vrei să ștergi ultimul bon?"
-        />
       </div>
+
+      {/* Fixed bottom menu */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
+          <Button
+            onClick={handleCheckout}
+            className="bg-green-500 hover:bg-green-600"
+          >
+            Achita
+          </Button>
+          <Button
+            onClick={() => setShowDailyTotal((prev) => !prev)}
+            variant="outline"
+          >
+            Total zi
+          </Button>
+          <div className="block md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Meniu</SheetTitle>
+                </SheetHeader>
+                <div className="mt-4 space-y-2">
+                  <Button
+                    onClick={() => setConfirmDeleteLast(true)}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Sterge ultimul bon
+                  </Button>
+                  <Button
+                    onClick={() => setShowBillHistory((prev) => !prev)}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Evidenta bonuri
+                  </Button>
+                  <Button
+                    onClick={() => setConfirmClearDay(true)}
+                    variant="outline"
+                    className="w-full text-red-500 hover:text-red-700"
+                  >
+                    Sterge zi
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+          <div className="hidden md:flex gap-2">
+            <Button
+              onClick={() => setConfirmDeleteLast(true)}
+              variant="outline"
+            >
+              Sterge ultimul bon
+            </Button>
+            <Button
+              onClick={() => setShowBillHistory((prev) => !prev)}
+              variant="outline"
+            >
+              Evidenta bonuri
+            </Button>
+            <Button
+              onClick={() => setConfirmClearDay(true)}
+              variant="outline"
+              className="text-red-500 hover:text-red-700"
+            >
+              Sterge zi
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <ConfirmDialog
+        isOpen={confirmClearDay}
+        onConfirm={handleClearDay}
+        onCancel={() => setConfirmClearDay(false)}
+        title="Confirmare"
+        description="Ești sigur că vrei să ștergi ziua fiscală?"
+      />
+
+      <ConfirmDialog
+        isOpen={confirmDeleteLast}
+        onConfirm={handleDeleteLastBill}
+        onCancel={() => setConfirmDeleteLast(false)}
+        title="Confirmare"
+        description="Ești sigur că vrei să ștergi ultimul bon?"
+      />
     </div>
   );
 };

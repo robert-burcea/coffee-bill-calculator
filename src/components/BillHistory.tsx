@@ -1,4 +1,5 @@
 import { Bill } from "@/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface BillHistoryProps {
   bills: Bill[];
@@ -10,7 +11,7 @@ export const BillHistory = ({ bills }: BillHistoryProps) => {
       {bills.map((bill, index) => (
         <div key={bill.id} className="bg-white rounded-lg shadow-sm p-4">
           <div className="font-bold mb-2">
-            Bon #{bills.length - index} - {new Date(bill.timestamp).toLocaleString()}
+            Bon #{index + 1} - {new Date(bill.timestamp).toLocaleString()}
           </div>
           <div className="space-y-2">
             {bill.items.map((item, itemIndex) => (
