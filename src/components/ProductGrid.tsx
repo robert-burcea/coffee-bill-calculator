@@ -27,7 +27,7 @@ export const ProductGrid = ({ products, currentBill, onProductClick }: ProductGr
             key={product.id}
             onClick={() => onProductClick(product)}
             className={cn(
-              "p-4 rounded-lg transition-all duration-200 text-sm font-medium text-center relative min-h-[80px]",
+              "p-4 rounded-lg transition-all duration-200 text-base font-medium text-center relative min-h-[100px]",
               "hover:shadow-md active:scale-95",
               quantity > 0
                 ? "bg-green-500 text-white"
@@ -35,11 +35,11 @@ export const ProductGrid = ({ products, currentBill, onProductClick }: ProductGr
             )}
           >
             {quantity > 0 && (
-              <span className="absolute top-1 right-1 bg-white text-green-600 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+              <span className="absolute top-2 right-2 bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow-sm">
                 {quantity}
               </span>
             )}
-            <div className="font-bold mb-1">{product.name}</div>
+            <div className="font-bold mb-2">{product.name}</div>
             <div>{product.price} RON</div>
           </button>
         )}

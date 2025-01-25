@@ -24,6 +24,7 @@ import {
 } from "@/utils/storage";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -152,7 +153,7 @@ const Index = () => {
             )}
             {showBillHistory && (
               <ScrollArea className="h-[300px]">
-                <BillHistory bills={[...bills]} />
+                <BillHistory bills={[...bills].reverse()} />
               </ScrollArea>
             )}
           </div>
@@ -164,14 +165,15 @@ const Index = () => {
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
           <Button
             onClick={handleCheckout}
-            className="bg-green-500 hover:bg-green-600 h-12 px-6 text-base"
+            className="bg-green-500 hover:bg-green-600 h-14 px-8 text-lg font-medium"
           >
             Achita
           </Button>
           <Button
             onClick={toggleDailyTotal}
             variant={showDailyTotal ? "default" : "outline"}
-            className={cn("h-12 px-6 text-base", 
+            className={cn(
+              "h-14 px-8 text-lg font-medium",
               showDailyTotal && "bg-blue-500 hover:bg-blue-600"
             )}
           >
@@ -180,8 +182,8 @@ const Index = () => {
           <div className="block md:hidden">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="h-12 w-12">
-                  <Menu className="h-6 w-6" />
+                <Button variant="outline" size="icon" className="h-14 w-14">
+                  <Menu className="h-8 w-8" />
                 </Button>
               </SheetTrigger>
               <SheetContent>
@@ -190,25 +192,35 @@ const Index = () => {
                 </SheetHeader>
                 <div className="mt-4 space-y-2">
                   <Button
-                    onClick={() => setConfirmDeleteLast(true)}
+                    onClick={() => {
+                      setConfirmDeleteLast(true);
+                      setIsSheetOpen(false);
+                    }}
                     variant="outline"
-                    className="w-full h-12 text-base"
+                    className="w-full h-14 text-lg font-medium"
                   >
                     Sterge ultimul bon
                   </Button>
                   <Button
-                    onClick={toggleBillHistory}
+                    onClick={() => {
+                      toggleBillHistory();
+                      setIsSheetOpen(false);
+                    }}
                     variant={showBillHistory ? "default" : "outline"}
-                    className={cn("w-full h-12 text-base",
+                    className={cn(
+                      "w-full h-14 text-lg font-medium",
                       showBillHistory && "bg-blue-500 hover:bg-blue-600"
                     )}
                   >
                     Evidenta bonuri
                   </Button>
                   <Button
-                    onClick={() => setConfirmClearDay(true)}
+                    onClick={() => {
+                      setConfirmClearDay(true);
+                      setIsSheetOpen(false);
+                    }}
                     variant="outline"
-                    className="w-full h-12 text-base text-red-500 hover:text-red-700"
+                    className="w-full h-14 text-lg font-medium text-red-500 hover:text-red-700"
                   >
                     Sterge zi
                   </Button>
@@ -220,14 +232,15 @@ const Index = () => {
             <Button
               onClick={() => setConfirmDeleteLast(true)}
               variant="outline"
-              className="h-12 px-6 text-base"
+              className="h-14 px-8 text-lg font-medium"
             >
               Sterge ultimul bon
             </Button>
             <Button
               onClick={toggleBillHistory}
               variant={showBillHistory ? "default" : "outline"}
-              className={cn("h-12 px-6 text-base",
+              className={cn(
+                "h-14 px-8 text-lg font-medium",
                 showBillHistory && "bg-blue-500 hover:bg-blue-600"
               )}
             >
@@ -236,7 +249,7 @@ const Index = () => {
             <Button
               onClick={() => setConfirmClearDay(true)}
               variant="outline"
-              className="h-12 px-6 text-base text-red-500 hover:text-red-700"
+              className="h-14 px-8 text-lg font-medium text-red-500 hover:text-red-700"
             >
               Sterge zi
             </Button>
