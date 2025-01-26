@@ -100,11 +100,6 @@ export const initializeProducts = () => {
         price: 3,
       },
       {
-        id: "1737762821655",
-        name: "SIROP 250ml",
-        price: 27,
-      },
-      {
         id: "1737762837542",
         name: "BISCUITI",
         price: 7.53,
