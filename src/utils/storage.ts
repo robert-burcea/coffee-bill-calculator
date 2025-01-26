@@ -7,128 +7,133 @@ export const initializeProducts = () => {
       {
         id: "1737762443341",
         name: "AMERICANO",
-        price: 10
+        price: 10,
       },
       {
         id: "1737762496397",
         name: "ESPRESSO",
-        price: 7
+        price: 7,
       },
       {
         id: "1737762513469",
         name: "ESPRESSO MACHIATO",
-        price: 7
+        price: 7,
       },
       {
         id: "1737762525709",
         name: "ESPRESSO DUBLU",
-        price: 12
+        price: 12,
       },
       {
         id: "1737762536486",
         name: "DRESSING",
-        price: 1
+        price: 1,
       },
       {
         id: "1737762547709",
         name: "AFFOGATO",
-        price: 19
+        price: 19,
       },
       {
         id: "1737762558166",
         name: "FLAT WHITE",
-        price: 15
+        price: 15,
       },
       {
         id: "1737762570981",
         name: "FLAT WHITE SOYA/MIGDALE",
-        price: 16
+        price: 16,
       },
       {
         id: "1737762587285",
         name: "CAPPUCCINO",
-        price: 13
+        price: 13,
       },
       {
         id: "1737762611213",
         name: "CAPPUCCINO LAPTE SOYA/MIGDALE",
-        price: 15
+        price: 15,
       },
       {
         id: "1737762632869",
         name: "CAFFE LATTE",
-        price: 16
+        price: 16,
       },
       {
         id: "1737762632870", // Changed ID to be unique
         name: "CAFFE LATTE SOYA/MIGDALE",
-        price: 18
+        price: 18,
       },
       {
         id: "1737762712182",
         name: "LONG BLACK",
-        price: 12
+        price: 12,
       },
       {
         id: "1737762720989",
         name: "CIOCOLATA CALDA",
-        price: 12
+        price: 12,
       },
       {
         id: "1737762729965",
         name: "CEAI",
-        price: 7
+        price: 7,
       },
       {
         id: "1737762740318",
         name: "FRAPPE",
-        price: 20
+        price: 20,
       },
       {
         id: "1737762755263",
         name: "ICED COFFEE SOYA/MIGDALE",
-        price: 18
+        price: 18,
       },
       {
         id: "1737762805534",
         name: "TOPPING",
-        price: 2
+        price: 2,
       },
       {
         id: "1737762812054",
         name: "SINGLE ORIGIN COFFEE",
-        price: 3
+        price: 3,
       },
       {
         id: "1737762821655",
         name: "SIROP 250ml",
-        price: 27
+        price: 27,
       },
       {
         id: "1737762837542",
-        name: "CAFEA ETHIOPIA",
-        price: 45
+        name: "BISCUITI",
+        price: 7.53,
       },
       {
         id: "1737762844918",
-        name: "CAFEA COLUMBIA",
-        price: 45
+        name: "COOKIES",
+        price: 6,
       },
       {
         id: "1737762861942",
-        name: "COLUMBIA DECOF",
-        price: 57
+        name: "PANDISPAN VEGAN",
+        price: 6,
       },
       {
         id: "1737762869630",
-        name: "CAFEA COSTARICA",
-        price: 45
+        name: "CARROT CAKE",
+        price: 6,
       },
       {
         id: "1737762877174",
-        name: "CAFEA BRAZILIA",
-        price: 39
-      }
+        name: "BROWNIE SIMPLU",
+        price: 10,
+      },
+      {
+        id: "1737962877174",
+        name: "BROWNIE CU PERE",
+        price: 12,
+      },
     ];
     localStorage.setItem("products", JSON.stringify(initialProducts));
   }
