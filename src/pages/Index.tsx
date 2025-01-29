@@ -25,8 +25,14 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
-const Index = () => {
+interface IndexProps {
+  location: "cantina" | "viva";
+}
+
+const Index = ({ location }: IndexProps) => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [currentBill, setCurrentBill] = useState<BillItem[]>([]);
   const [bills, setBills] = useState<Bill[]>([]);
@@ -83,6 +89,7 @@ const Index = () => {
       items: currentBill,
       total,
       timestamp: Date.now(),
+      location,
     };
 
     addBill(newBill);
@@ -130,7 +137,14 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Spoonful</h1>
+          <h1 className="text-2xl font-bold">Spoonful - {location.toUpperCase()}</h1>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/")}
+            className="text-gray-600"
+          >
+            Schimbă locația
+          </Button>
         </div>
 
         <div className="grid md:grid-cols-[2fr,1fr] gap-6 mb-20">

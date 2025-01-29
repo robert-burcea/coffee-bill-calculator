@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  location: "cantina" | "viva";
 }
 
 export interface BillItem {
@@ -14,4 +15,5 @@ export interface Bill {
   items: BillItem[];
   total: number;
   timestamp: number;
+  location: "cantina" | "viva";
 }
