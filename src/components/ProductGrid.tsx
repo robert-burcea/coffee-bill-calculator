@@ -6,9 +6,15 @@ interface ProductGridProps {
   products: Product[];
   currentBill: BillItem[];
   onProductClick: (product: Product) => void;
+  selectedCategory: string | null;
 }
 
-export const ProductGrid = ({ products, currentBill, onProductClick }: ProductGridProps) => {
+export const ProductGrid = ({
+  products,
+  currentBill,
+  onProductClick,
+  selectedCategory,
+}: ProductGridProps) => {
   const getProductQuantity = (product: Product) => {
     return currentBill.reduce((total, item) => {
       if (item.product.id === product.id) {
@@ -18,9 +24,13 @@ export const ProductGrid = ({ products, currentBill, onProductClick }: ProductGr
     }, 0);
   };
 
+  const filteredProducts = selectedCategory
+    ? products.filter((product) => product.category === selectedCategory)
+    : products;
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
-      {products.map((product) => {
+      {filteredProducts.map((product) => {
         const quantity = getProductQuantity(product);
         return (
           <button

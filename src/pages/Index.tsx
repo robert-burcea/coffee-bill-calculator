@@ -21,11 +21,15 @@ import {
   removeLastBill,
   clearBills,
   initializeProducts,
+  getCategories,
+  addCategory as addCategoryToStorage,
+  removeCategory as removeCategoryFromStorage,
 } from "@/utils/storage";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { CategoryBar } from "@/components/CategoryBar";
 
 interface IndexProps {
   location: "cantina" | "viva";
@@ -42,12 +46,18 @@ const Index = ({ location }: IndexProps) => {
   const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { toast } = useToast();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     initializeProducts();
-    setProducts(getProducts());
+    const filteredProducts = getProducts().filter(
+      (product) => product.location === location
+    );
+    setProducts(filteredProducts);
     setBills(getBills());
-  }, []);
+    setCategories(getCategories(location));
+  }, [location]);
 
   const handleProductClick = (product: Product) => {
     setCurrentBill((prev) => {
@@ -133,6 +143,19 @@ const Index = ({ location }: IndexProps) => {
     setIsSheetOpen(false);
   };
 
+  const handleAddCategory = (category: string) => {
+    addCategoryToStorage(category, location);
+    setCategories((prev) => [...prev, category]);
+  };
+
+  const handleRemoveCategory = (category: string) => {
+    removeCategoryFromStorage(category, location);
+    setCategories((prev) => prev.filter((c) => c !== category));
+    if (selectedCategory === category) {
+      setSelectedCategory(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
@@ -147,12 +170,21 @@ const Index = ({ location }: IndexProps) => {
           </Button>
         </div>
 
+        <CategoryBar
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          onAddCategory={handleAddCategory}
+          onRemoveCategory={handleRemoveCategory}
+        />
+
         <div className="grid md:grid-cols-[2fr,1fr] gap-6 mb-20">
           <div>
             <ProductGrid
               products={products}
               currentBill={currentBill}
               onProductClick={handleProductClick}
+              selectedCategory={selectedCategory}
             />
           </div>
           <div className="space-y-4">
