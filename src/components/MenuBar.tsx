@@ -1,25 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { ProductManagement } from "@/components/ProductManagement";
+import { Product } from "@/types";
 
 interface MenuBarProps {
   location: "cantina" | "viva";
+  products: Product[];
+  onProductsChange: (products: Product[]) => void;
 }
 
-export const MenuBar = ({ location }: MenuBarProps) => {
-  const navigate = useNavigate();
-
+export const MenuBar = ({ location, products, onProductsChange }: MenuBarProps) => {
   return (
-    <div className="flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-bold">
-        Spoonful - {location.toUpperCase()}
-      </h1>
-      <Button
-        variant="outline"
-        onClick={() => navigate("/")}
-        className="text-gray-600"
-      >
-        Schimbă locația
-      </Button>
+    <div className="flex items-center justify-between mb-6">
+      <h1 className="text-2xl font-bold">{location.toUpperCase()}</h1>
+      <ProductManagement
+        location={location}
+        products={products}
+        onProductsChange={onProductsChange}
+      />
     </div>
   );
 };

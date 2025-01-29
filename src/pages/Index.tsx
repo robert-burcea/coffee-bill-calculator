@@ -17,6 +17,7 @@ import { CategoryBar } from "@/components/CategoryBar";
 import { MenuBar } from "@/components/MenuBar";
 import { MainContent } from "@/components/MainContent";
 import { BottomMenu } from "@/components/BottomMenu";
+import { Product } from "@/types";
 
 interface IndexProps {
   location: "cantina" | "viva";
@@ -140,10 +141,18 @@ const Index = ({ location }: IndexProps) => {
     }
   };
 
+  const handleProductsChange = (updatedProducts: Product[]) => {
+    setProducts(updatedProducts);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
-        <MenuBar location={location} />
+        <MenuBar
+          location={location}
+          products={products}
+          onProductsChange={handleProductsChange}
+        />
 
         <CategoryBar
           categories={categories}
