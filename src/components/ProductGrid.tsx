@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Product, BillItem } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -6,14 +5,12 @@ interface ProductGridProps {
   products: Product[];
   currentBill: BillItem[];
   onProductClick: (product: Product) => void;
-  selectedCategory: string | null;
 }
 
 export const ProductGrid = ({
   products,
   currentBill,
   onProductClick,
-  selectedCategory,
 }: ProductGridProps) => {
   const getProductQuantity = (product: Product) => {
     return currentBill.reduce((total, item) => {
@@ -24,13 +21,9 @@ export const ProductGrid = ({
     }, 0);
   };
 
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
-
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
-      {filteredProducts.map((product) => {
+      {products.map((product) => {
         const quantity = getProductQuantity(product);
         return (
           <button

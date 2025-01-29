@@ -2,22 +2,10 @@ import { useEffect, useState } from "react";
 import { Product, BillItem, Bill } from "@/types";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  getProducts,
-  getBills,
-  addBill,
-  removeLastBill,
-  clearBills,
-  initializeProducts,
-  getCategories,
-  addCategory as addCategoryToStorage,
-  removeCategory as removeCategoryFromStorage,
-} from "@/utils/storage";
-import { CategoryBar } from "@/components/CategoryBar";
+import { getBills, addBill, removeLastBill, clearBills } from "@/utils/storage";
 import { MenuBar } from "@/components/MenuBar";
 import { MainContent } from "@/components/MainContent";
 import { BottomMenu } from "@/components/BottomMenu";
-import { Product } from "@/types";
 
 interface IndexProps {
   location: "cantina" | "viva";
@@ -32,18 +20,16 @@ const Index = ({ location }: IndexProps) => {
   const [confirmClearDay, setConfirmClearDay] = useState(false);
   const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [categories, setCategories] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
-    initializeProducts();
-    const filteredProducts = getProducts().filter(
-      (product) => product.location === location
+    const storedProducts = localStorage.getItem("products");
+    const initialProducts = storedProducts ? JSON.parse(storedProducts) : [];
+    const filteredProducts = initialProducts.filter(
+      (product: Product) => product.location === location
     );
     setProducts(filteredProducts);
     setBills(getBills());
-    setCategories(getCategories(location));
   }, [location]);
 
   const handleProductClick = (product: Product) => {
@@ -128,39 +114,10 @@ const Index = ({ location }: IndexProps) => {
     setIsSheetOpen(false);
   };
 
-  const handleAddCategory = (category: string) => {
-    addCategoryToStorage(category, location);
-    setCategories((prev) => [...prev, category]);
-  };
-
-  const handleRemoveCategory = (category: string) => {
-    removeCategoryFromStorage(category, location);
-    setCategories((prev) => prev.filter((c) => c !== category));
-    if (selectedCategory === category) {
-      setSelectedCategory(null);
-    }
-  };
-
-  const handleProductsChange = (updatedProducts: Product[]) => {
-    setProducts(updatedProducts);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
-        <MenuBar
-          location={location}
-          products={products}
-          onProductsChange={handleProductsChange}
-        />
-
-        <CategoryBar
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-          onAddCategory={handleAddCategory}
-          onRemoveCategory={handleRemoveCategory}
-        />
+        <MenuBar location={location} />
 
         <MainContent
           products={products}
@@ -168,7 +125,7 @@ const Index = ({ location }: IndexProps) => {
           bills={bills}
           showDailyTotal={showDailyTotal}
           showBillHistory={showBillHistory}
-          selectedCategory={selectedCategory}
+          selectedCategory={null}
           onProductClick={handleProductClick}
           onRemoveItem={handleRemoveItem}
         />

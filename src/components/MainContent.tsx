@@ -22,7 +22,6 @@ export const MainContent = ({
   bills,
   showDailyTotal,
   showBillHistory,
-  selectedCategory,
   onProductClick,
   onRemoveItem,
 }: MainContentProps) => {
@@ -33,7 +32,6 @@ export const MainContent = ({
           products={products}
           currentBill={currentBill}
           onProductClick={onProductClick}
-          selectedCategory={selectedCategory}
         />
       </div>
       <div className="space-y-4">
