@@ -34,7 +34,7 @@ export const CategoryBar = ({
         <div
           className={cn(
             "space-y-2",
-            isMobile && "flex gap-2 space-y-0 overflow-x-auto pb-2 flex-nowrap"
+            isMobile && "flex flex-wrap gap-2 space-y-0"
           )}
         >
           <button
