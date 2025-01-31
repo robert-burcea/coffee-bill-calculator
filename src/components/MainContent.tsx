@@ -4,6 +4,8 @@ import { CurrentBill } from "@/components/CurrentBill";
 import { BillHistory } from "@/components/BillHistory";
 import { DailyTotal } from "@/components/DailyTotal";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface MainContentProps {
   products: Product[];
@@ -22,14 +24,26 @@ export const MainContent = ({
   bills,
   showDailyTotal,
   showBillHistory,
+  selectedCategory,
   onProductClick,
   onRemoveItem,
 }: MainContentProps) => {
+  const isMobile = useIsMobile();
+
+  const filteredProducts = selectedCategory
+    ? products.filter((product) => product.category === selectedCategory)
+    : products;
+
   return (
-    <div className="grid md:grid-cols-[2fr,1fr] gap-6 mb-20">
+    <div
+      className={cn(
+        "grid md:grid-cols-[2fr,1fr] gap-6 mb-20",
+        !isMobile && "ml-48"
+      )}
+    >
       <div>
         <ProductGrid
-          products={products}
+          products={filteredProducts}
           currentBill={currentBill}
           onProductClick={onProductClick}
         />

@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   price: number;
   location: "cantina" | "viva";
+  category: string;
 }
 
 export interface BillItem {
