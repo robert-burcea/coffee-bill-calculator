@@ -22,7 +22,7 @@ export const CategoryBar = ({
       className={cn(
         "bg-white shadow-sm",
         isMobile
-          ? "sticky top-0 z-10 py-2 mb-4"
+          ? "sticky top-0 z-10 py-2 mb-4 w-full"
           : "fixed left-0 top-0 h-full w-48 py-8"
       )}
     >
@@ -34,16 +34,17 @@ export const CategoryBar = ({
         <div
           className={cn(
             "space-y-2",
-            isMobile && "flex space-x-4 space-y-0"
+            isMobile && "flex gap-2 space-y-0 overflow-x-auto pb-2 flex-nowrap"
           )}
         >
           <button
             onClick={() => onSelectCategory(null)}
             className={cn(
-              "w-full px-4 py-2 text-left rounded-lg transition-colors",
+              "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap",
               selectedCategory === null
                 ? "bg-green-500 text-white"
-                : "hover:bg-gray-100"
+                : "hover:bg-gray-100",
+              !isMobile && "w-full"
             )}
           >
             Toate
@@ -53,10 +54,11 @@ export const CategoryBar = ({
               key={category}
               onClick={() => onSelectCategory(category)}
               className={cn(
-                "w-full px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap",
+                "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap",
                 selectedCategory === category
                   ? "bg-green-500 text-white"
-                  : "hover:bg-gray-100"
+                  : "hover:bg-gray-100",
+                !isMobile && "w-full"
               )}
             >
               {category}
