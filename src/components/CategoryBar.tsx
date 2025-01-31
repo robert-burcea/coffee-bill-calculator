@@ -34,16 +34,16 @@ export const CategoryBar = ({
         <div
           className={cn(
             "space-y-2",
-            isMobile && "flex flex-wrap gap-2 space-y-0"
+            isMobile && "flex flex-wrap gap-2 space-y-0 justify-center"
           )}
         >
           <button
             onClick={() => onSelectCategory(null)}
             className={cn(
-              "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap",
+              "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border border-gray-200 shadow-sm hover:shadow-md",
               selectedCategory === null
-                ? "bg-green-500 text-white"
-                : "hover:bg-gray-100",
+                ? "bg-green-500 text-white border-green-600"
+                : "bg-white text-gray-700 hover:bg-gray-50",
               !isMobile && "w-full"
             )}
           >
@@ -54,10 +54,10 @@ export const CategoryBar = ({
               key={category}
               onClick={() => onSelectCategory(category)}
               className={cn(
-                "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap",
+                "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border border-gray-200 shadow-sm hover:shadow-md",
                 selectedCategory === category
-                  ? "bg-green-500 text-white"
-                  : "hover:bg-gray-100",
+                  ? "bg-green-500 text-white border-green-600"
+                  : "bg-white text-gray-700 hover:bg-gray-50",
                 !isMobile && "w-full"
               )}
             >
