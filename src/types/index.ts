@@ -4,6 +4,7 @@ export interface Product {
   price: number;
   location: "cantina" | "viva";
   category: string;
+  barcode?: string;
 }
 
 export interface BillItem {

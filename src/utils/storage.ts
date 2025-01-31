@@ -88,6 +88,70 @@ export const initializeProducts = () => {
         location: "viva",
         category: "CAFEA",
       },
+      {
+        id: "1737762443342",
+        name: "MENIU ZILEI",
+        price: 25,
+        location: "cantina",
+        category: "MENIURI",
+        barcode: "123456789"
+      },
+      {
+        id: "1737762443343",
+        name: "MENIU VEGETARIAN",
+        price: 22,
+        location: "cantina",
+        category: "MENIURI",
+        barcode: "123456790"
+      },
+      {
+        id: "1737762443344",
+        name: "MENIU PESTE",
+        price: 28,
+        location: "cantina",
+        category: "MENIURI",
+        barcode: "123456791"
+      },
+      {
+        id: "1737762443345",
+        name: "COCA COLA",
+        price: 8,
+        location: "cantina",
+        category: "BAUTURI",
+        barcode: "123456792"
+      },
+      {
+        id: "1737762443346",
+        name: "FANTA",
+        price: 8,
+        location: "cantina",
+        category: "BAUTURI",
+        barcode: "123456793"
+      },
+      {
+        id: "1737762443347",
+        name: "SPRITE",
+        price: 8,
+        location: "cantina",
+        category: "BAUTURI",
+        barcode: "123456794"
+      },
+      {
+        id: "1737762443348",
+        name: "OMLETA",
+        price: 15,
+        location: "cantina",
+        category: "MIC DEJUN",
+        barcode: "123456795"
+      },
+      {
+        id: "1737762443349",
+        name: "SANDWICH",
+        price: 12,
+        location: "cantina",
+        category: "MIC DEJUN",
+        barcode: "123456796"
+      }
     ];
     localStorage.setItem("products", JSON.stringify(initialProducts));
   }

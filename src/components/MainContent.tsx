@@ -5,6 +5,8 @@ import { BillHistory } from "@/components/BillHistory";
 import { DailyTotal } from "@/components/DailyTotal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SearchBar } from "@/components/SearchBar";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface MainContentProps {
@@ -29,10 +31,18 @@ export const MainContent = ({
   onRemoveItem,
 }: MainContentProps) => {
   const isMobile = useIsMobile();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory = selectedCategory
+      ? product.category === selectedCategory
+      : true;
+    const matchesSearch = searchQuery
+      ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.barcode?.includes(searchQuery)
+      : true;
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div
@@ -42,6 +52,7 @@ export const MainContent = ({
       )}
     >
       <div>
+        <SearchBar onSearch={setSearchQuery} />
         <ProductGrid
           products={filteredProducts}
           currentBill={currentBill}
