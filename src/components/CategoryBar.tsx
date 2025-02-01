@@ -20,7 +20,7 @@ export const CategoryBar = ({
   return (
     <div
       className={cn(
-        "bg-white shadow-sm",
+        "bg-[#f3f3f3] shadow-sm border-r border-[#e0e0e0]",
         isMobile
           ? "sticky top-0 z-10 py-2 mb-4 w-full"
           : "fixed left-0 top-0 h-full w-52 py-8"
@@ -40,10 +40,10 @@ export const CategoryBar = ({
           <button
             onClick={() => onSelectCategory(null)}
             className={cn(
-              "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border border-gray-200 shadow-sm hover:shadow-md",
+              "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border shadow-sm hover:shadow-md",
               selectedCategory === null
-                ? "bg-green-500 text-white border-green-600"
-                : "bg-white text-gray-700 hover:bg-gray-50",
+                ? "bg-[#9b87f5] text-white border-[#7E69AB]"
+                : "bg-white text-gray-700 hover:bg-[#D6BCFA] hover:text-gray-900 border-[#e0e0e0]",
               !isMobile && "w-full"
             )}
           >
@@ -54,10 +54,10 @@ export const CategoryBar = ({
               key={category}
               onClick={() => onSelectCategory(category)}
               className={cn(
-                "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border border-gray-200 shadow-sm hover:shadow-md",
+                "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border shadow-sm hover:shadow-md",
                 selectedCategory === category
-                  ? "bg-green-500 text-white border-green-600"
-                  : "bg-white text-gray-700 hover:bg-gray-50",
+                  ? "bg-[#9b87f5] text-white border-[#7E69AB]"
+                  : "bg-white text-gray-700 hover:bg-[#D6BCFA] hover:text-gray-900 border-[#e0e0e0]",
                 !isMobile && "w-full"
               )}
             >
