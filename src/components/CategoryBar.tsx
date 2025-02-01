@@ -23,18 +23,18 @@ export const CategoryBar = ({
         "bg-white shadow-sm",
         isMobile
           ? "sticky top-0 z-10 py-2 mb-4 w-full"
-          : "fixed left-0 top-0 h-full w-48 py-8"
+          : "fixed left-0 top-0 h-full w-52 py-8"
       )}
     >
       <ScrollArea
         className={cn(
-          isMobile ? "w-full px-4" : "h-full"
+          isMobile ? "w-full px-4" : "h-full px-4"
         )}
       >
         <div
           className={cn(
-            "space-y-2",
-            isMobile && "flex flex-wrap gap-2 space-y-0 justify-center"
+            "space-y-3",
+            isMobile && "flex flex-wrap gap-3 space-y-0 justify-center"
           )}
         >
           <button

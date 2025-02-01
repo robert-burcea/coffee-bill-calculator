@@ -1,167 +1,3 @@
-import { Product } from "@/types";
-
-export const initializeProducts = () => {
-  const existingProducts = localStorage.getItem("products");
-  if (!existingProducts) {
-    const initialProducts: Product[] = [
-      {
-        id: "1737762443341",
-        name: "AMERICANO",
-        price: 10,
-        location: "cantina",
-        category: "BAUTURI",
-      },
-      {
-        id: "1737762496397",
-        name: "ESPRESSO",
-        price: 7,
-        location: "cantina",
-        category: "BAUTURI",
-      },
-      {
-        id: "1737762513469",
-        name: "ESPRESSO MACHIATO",
-        price: 7,
-        location: "cantina",
-        category: "BAUTURI",
-      },
-      {
-        id: "1737762525709",
-        name: "ESPRESSO DUBLU",
-        price: 12,
-        location: "cantina",
-        category: "BAUTURI",
-      },
-      {
-        id: "1737762536486",
-        name: "DRESSING",
-        price: 1,
-        location: "cantina",
-        category: "MIC DEJUN",
-      },
-      {
-        id: "1737762547709",
-        name: "AFFOGATO",
-        price: 19,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762558166",
-        name: "FLAT WHITE",
-        price: 15,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762570981",
-        name: "FLAT WHITE SOYA/MIGDALE",
-        price: 16,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762587285",
-        name: "CAPPUCCINO",
-        price: 13,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762611213",
-        name: "CAPPUCCINO LAPTE SOYA/MIGDALE",
-        price: 15,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762632869",
-        name: "CAFFE LATTE",
-        price: 16,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762632870",
-        name: "CAFFE LATTE SOYA/MIGDALE",
-        price: 18,
-        location: "viva",
-        category: "CAFEA",
-      },
-      {
-        id: "1737762443342",
-        name: "MENIU ZILEI",
-        price: 25,
-        location: "cantina",
-        category: "MENIURI",
-        barcode: "123456789"
-      },
-      {
-        id: "1737762443343",
-        name: "MENIU VEGETARIAN",
-        price: 22,
-        location: "cantina",
-        category: "MENIURI",
-        barcode: "123456790"
-      },
-      {
-        id: "1737762443344",
-        name: "MENIU PESTE",
-        price: 28,
-        location: "cantina",
-        category: "MENIURI",
-        barcode: "123456791"
-      },
-      {
-        id: "1737762443345",
-        name: "COCA COLA",
-        price: 8,
-        location: "cantina",
-        category: "BAUTURI",
-        barcode: "123456792"
-      },
-      {
-        id: "1737762443346",
-        name: "FANTA",
-        price: 8,
-        location: "cantina",
-        category: "BAUTURI",
-        barcode: "123456793"
-      },
-      {
-        id: "1737762443347",
-        name: "SPRITE",
-        price: 8,
-        location: "cantina",
-        category: "BAUTURI",
-        barcode: "123456794"
-      },
-      {
-        id: "1737762443348",
-        name: "OMLETA",
-        price: 15,
-        location: "cantina",
-        category: "MIC DEJUN",
-        barcode: "123456795"
-      },
-      {
-        id: "1737762443349",
-        name: "SANDWICH",
-        price: 12,
-        location: "cantina",
-        category: "MIC DEJUN",
-        barcode: "123456796"
-      }
-    ];
-    localStorage.setItem("products", JSON.stringify(initialProducts));
-  }
-};
-
-export const getProducts = (): Product[] => {
-  const products = localStorage.getItem("products");
-  return products ? JSON.parse(products) : [];
-};
-
 export const getBills = () => {
   const bills = localStorage.getItem("bills");
   return bills ? JSON.parse(bills) : [];
@@ -180,4 +16,76 @@ export const removeLastBill = () => {
 
 export const clearBills = () => {
   localStorage.removeItem("bills");
+};
+
+export const initializeProducts = () => {
+  const products = [
+    {
+      id: "1",
+      name: "Espresso",
+      price: 8,
+      category: "CAFEA",
+      location: "viva",
+      barcode: "123456789"
+    },
+    {
+      id: "2",
+      name: "Cappuccino",
+      price: 12,
+      category: "CAFEA",
+      location: "viva",
+      barcode: "223456789"
+    },
+    {
+      id: "3",
+      name: "Coca Cola",
+      price: 7,
+      category: "BAUTURI",
+      location: "viva",
+      barcode: "323456789"
+    },
+    {
+      id: "4",
+      name: "Tiramisu",
+      price: 15,
+      category: "DESERT",
+      location: "viva",
+      barcode: "423456789"
+    },
+    {
+      id: "5",
+      name: "Meniu 1",
+      price: 25,
+      category: "MENIURI",
+      location: "cantina",
+      barcode: "523456789"
+    },
+    {
+      id: "6",
+      name: "Meniu 2",
+      price: 28,
+      category: "MENIURI",
+      location: "cantina",
+      barcode: "623456789"
+    },
+    {
+      id: "7",
+      name: "Apa plata",
+      price: 5,
+      category: "BAUTURI",
+      location: "cantina",
+      barcode: "723456789"
+    },
+    {
+      id: "8",
+      name: "Omleta",
+      price: 12,
+      category: "MIC DEJUN",
+      location: "cantina",
+      barcode: "823456789"
+    }
+  ];
+  
+  localStorage.setItem("products", JSON.stringify(products));
+  return products;
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Product, BillItem, Bill } from "@/types";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useToast } from "@/components/ui/use-toast";
-import { getBills, addBill, removeLastBill, clearBills } from "@/utils/storage";
+import { getBills, addBill, removeLastBill, clearBills, initializeProducts } from "@/utils/storage";
 import { MenuBar } from "@/components/MenuBar";
 import { MainContent } from "@/components/MainContent";
 import { BottomMenu } from "@/components/BottomMenu";
@@ -31,7 +31,7 @@ const Index = ({ location }: IndexProps) => {
 
   useEffect(() => {
     const storedProducts = localStorage.getItem("products");
-    const initialProducts = storedProducts ? JSON.parse(storedProducts) : [];
+    const initialProducts = storedProducts ? JSON.parse(storedProducts) : initializeProducts();
     const filteredProducts = initialProducts.filter(
       (product: Product) => product.location === location
     );
