@@ -17,8 +17,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/cantina" element={<Cantina />} />
-          <Route path="/viva" element={<Viva />} />
+          <Route path="/cantina/*" element={<Cantina />} />
+          <Route path="/viva/*" element={<Viva />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

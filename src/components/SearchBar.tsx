@@ -1,17 +1,26 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
 export const SearchBar = ({ onSearch }: SearchBarProps) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    if (searchTerm.length >= 3) {
+      onSearch(searchTerm);
+    } else if (searchTerm.length === 0) {
+      onSearch("");
+    }
+  }, [searchTerm, onSearch]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const input = form.elements.namedItem('search') as HTMLInputElement;
-    onSearch(input.value);
+    onSearch(searchTerm);
   };
 
   return (
@@ -19,6 +28,8 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
       <Input
         type="text"
         name="search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Search by name or barcode..."
         className="flex-1 min-w-[200px]"
       />

@@ -45,32 +45,34 @@ export const MainContent = ({
   });
 
   return (
-    <div
-      className={cn(
-        "grid md:grid-cols-[2fr,1fr] gap-6 mb-20",
-        !isMobile && "ml-48"
-      )}
-    >
-      <div>
-        <SearchBar onSearch={setSearchQuery} />
-        <ProductGrid
-          products={filteredProducts}
-          currentBill={currentBill}
-          onProductClick={onProductClick}
-        />
-      </div>
-      <div className="space-y-4">
-        <CurrentBill items={currentBill} onRemoveItem={onRemoveItem} />
-        {showDailyTotal && (
-          <ScrollArea className="h-[300px]">
-            <DailyTotal bills={bills} />
-          </ScrollArea>
+    <div className="min-h-screen">
+      <div
+        className={cn(
+          "grid md:grid-cols-[2fr,1fr] gap-6 mb-20",
+          !isMobile && "ml-52 mr-4"
         )}
-        {showBillHistory && (
-          <ScrollArea className="h-[300px]">
-            <BillHistory bills={[...bills].reverse()} />
-          </ScrollArea>
-        )}
+      >
+        <div>
+          <SearchBar onSearch={setSearchQuery} />
+          <ProductGrid
+            products={filteredProducts}
+            currentBill={currentBill}
+            onProductClick={onProductClick}
+          />
+        </div>
+        <div className="space-y-4">
+          <CurrentBill items={currentBill} onRemoveItem={onRemoveItem} />
+          {showDailyTotal && (
+            <ScrollArea className="h-[300px]">
+              <DailyTotal bills={bills} />
+            </ScrollArea>
+          )}
+          {showBillHistory && (
+            <ScrollArea className="h-[300px]">
+              <BillHistory bills={[...bills].reverse()} />
+            </ScrollArea>
+          )}
+        </div>
       </div>
     </div>
   );
