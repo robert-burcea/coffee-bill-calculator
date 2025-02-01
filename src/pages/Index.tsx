@@ -154,6 +154,7 @@ const Index = ({ location }: IndexProps) => {
         showDailyTotal={showDailyTotal}
         isSheetOpen={isSheetOpen}
         setIsSheetOpen={setIsSheetOpen}
+        location={location}
       />
 
       <ConfirmDialog

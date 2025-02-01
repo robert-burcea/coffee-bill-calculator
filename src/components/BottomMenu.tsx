@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Navigation } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
@@ -19,6 +20,7 @@ interface BottomMenuProps {
   showDailyTotal: boolean;
   isSheetOpen: boolean;
   setIsSheetOpen: (open: boolean) => void;
+  location: "cantina" | "viva";
 }
 
 export const BottomMenu = ({
@@ -31,7 +33,11 @@ export const BottomMenu = ({
   showDailyTotal,
   isSheetOpen,
   setIsSheetOpen,
+  location,
 }: BottomMenuProps) => {
+  const navigate = useNavigate();
+  const targetLocation = location === "cantina" ? "viva" : "cantina";
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
@@ -63,6 +69,17 @@ export const BottomMenu = ({
                 <SheetTitle>Meniu</SheetTitle>
               </SheetHeader>
               <div className="mt-4 space-y-2">
+                <Button
+                  onClick={() => {
+                    navigate(`/${targetLocation}`);
+                    setIsSheetOpen(false);
+                  }}
+                  variant="outline"
+                  className="w-full h-14 text-lg font-medium gap-2"
+                >
+                  <Navigation className="h-4 w-4" />
+                  {targetLocation.toUpperCase()}
+                </Button>
                 <Button
                   onClick={onDeleteLastBill}
                   variant="outline"
