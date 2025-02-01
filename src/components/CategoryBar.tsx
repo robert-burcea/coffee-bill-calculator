@@ -42,8 +42,8 @@ export const CategoryBar = ({
             className={cn(
               "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border shadow-sm hover:shadow-md",
               selectedCategory === null
-                ? "bg-[#9b87f5] text-white border-[#7E69AB]"
-                : "bg-white text-gray-700 hover:bg-[#D6BCFA] hover:text-gray-900 border-[#e0e0e0]",
+                ? "bg-green-500 text-white border-green-600"
+                : "bg-white text-gray-700 hover:bg-green-100 hover:text-gray-900 border-[#e0e0e0]",
               !isMobile && "w-full"
             )}
           >
@@ -56,8 +56,8 @@ export const CategoryBar = ({
               className={cn(
                 "px-4 py-2 text-left rounded-lg transition-colors whitespace-nowrap border shadow-sm hover:shadow-md",
                 selectedCategory === category
-                  ? "bg-[#9b87f5] text-white border-[#7E69AB]"
-                  : "bg-white text-gray-700 hover:bg-[#D6BCFA] hover:text-gray-900 border-[#e0e0e0]",
+                  ? "bg-green-500 text-white border-green-600"
+                  : "bg-white text-gray-700 hover:bg-green-100 hover:text-gray-900 border-[#e0e0e0]",
                 !isMobile && "w-full"
               )}
             >

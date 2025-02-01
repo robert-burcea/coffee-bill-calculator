@@ -17,7 +17,7 @@ export const MenuBar = ({ location }: MenuBarProps) => {
         <Button
           variant="outline"
           onClick={() => navigate(`/${targetLocation}`)}
-          className="gap-2 border-[#9b87f5] text-[#7E69AB] hover:bg-[#D6BCFA] hover:text-[#333333]"
+          className="gap-2 border-green-500 text-green-600 hover:bg-green-100 hover:text-[#333333]"
         >
           <Navigation className="h-4 w-4" />
           {targetLocation.toUpperCase()}

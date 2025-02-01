@@ -41,12 +41,12 @@ export const ProductGrid = ({
               "p-4 rounded-lg transition-all duration-200 text-base font-medium text-center relative min-h-[100px]",
               "hover:shadow-md active:scale-95",
               quantity > 0
-                ? "bg-[#9b87f5] text-white"
-                : "bg-white border border-[#e0e0e0] text-gray-800 hover:bg-[#D6BCFA] hover:text-gray-900"
+                ? "bg-green-500 text-white"
+                : "bg-white border border-[#e0e0e0] text-gray-800 hover:bg-green-100 hover:text-gray-900"
             )}
           >
             {quantity > 0 && (
-              <span className="absolute top-2 right-2 bg-white text-[#7E69AB] rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow-sm">
+              <span className="absolute top-2 right-2 bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow-sm">
                 {quantity}
               </span>
             )}
