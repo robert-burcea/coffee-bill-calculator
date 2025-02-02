@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Bill, BillItem } from "@/types";
-import { useToast } from "@/components/ui/use-toast";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { addBill, removeLastBill, clearBills } from "@/utils/storage";
+import { BillConfirmDialogs } from "./bill/BillConfirmDialogs";
+import { useBillOperations } from "./bill/BillOperations";
 
 interface BillManagerProps {
   bills: Bill[];
@@ -23,79 +22,26 @@ export const BillManager = ({
 }: BillManagerProps) => {
   const [confirmClearDay, setConfirmClearDay] = useState(false);
   const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
-  const { toast } = useToast();
 
-  const handleCheckout = () => {
-    if (currentBill.length === 0) {
-      toast({
-        title: "Eroare",
-        description: "Nu există produse în bon",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const total = currentBill.reduce(
-      (sum, item) => sum + item.product.price * item.quantity,
-      0
-    );
-
-    const newBill: Bill = {
-      id: Date.now().toString(),
-      items: currentBill,
-      total,
-      timestamp: Date.now(),
-      location,
-    };
-
-    addBill(newBill);
-    setBills((prev: Bill[]) => [...prev, newBill]);
-    setCurrentBill([]);
-    toast({
-      title: "Succes",
-      description: "Bonul a fost salvat",
-    });
-  };
-
-  const handleClearDay = () => {
-    clearBills();
-    setBills([]);
-    setConfirmClearDay(false);
-    setIsSheetOpen(false);
-    toast({
-      title: "Succes",
-      description: "Ziua fiscală a fost ștearsă",
-    });
-  };
-
-  const handleDeleteLastBill = () => {
-    removeLastBill();
-    setBills((prev: Bill[]) => prev.slice(0, -1));
-    setConfirmDeleteLast(false);
-    setIsSheetOpen(false);
-    toast({
-      title: "Succes",
-      description: "Ultimul bon a fost șters",
-    });
-  };
+  const { handleCheckout, handleClearDay, handleDeleteLastBill } = useBillOperations({
+    bills,
+    setBills,
+    currentBill,
+    setCurrentBill,
+    location,
+    setIsSheetOpen,
+    setConfirmClearDay,
+    setConfirmDeleteLast,
+  });
 
   return (
-    <>
-      <ConfirmDialog
-        isOpen={confirmClearDay}
-        onConfirm={handleClearDay}
-        onCancel={() => setConfirmClearDay(false)}
-        title="Confirmare"
-        description="Ești sigur că vrei să ștergi ziua fiscală?"
-      />
-
-      <ConfirmDialog
-        isOpen={confirmDeleteLast}
-        onConfirm={handleDeleteLastBill}
-        onCancel={() => setConfirmDeleteLast(false)}
-        title="Confirmare"
-        description="Ești sigur că vrei să ștergi ultimul bon?"
-      />
-    </>
+    <BillConfirmDialogs
+      confirmClearDay={confirmClearDay}
+      confirmDeleteLast={confirmDeleteLast}
+      onClearDay={handleClearDay}
+      onDeleteLastBill={handleDeleteLastBill}
+      setConfirmClearDay={setConfirmClearDay}
+      setConfirmDeleteLast={setConfirmDeleteLast}
+    />
   );
 };
