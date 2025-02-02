@@ -78,7 +78,6 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       category: "MENIURI",
       location: "cantina",
       barcode: "523456789",
-      hidden: true,
     },
     {
       id: "6",
