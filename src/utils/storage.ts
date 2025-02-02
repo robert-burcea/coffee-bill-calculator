@@ -22,7 +22,7 @@ export const clearBills = () => {
 
 const HIDDEN_CATEGORIES = {
   cantina: ["ASCUNSE"],
-  viva: ["ASCUNSE"]
+  viva: ["ASCUNSE"],
 };
 
 export const initializeProducts = (location: "cantina" | "viva") => {
@@ -33,7 +33,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 8,
       category: "CAFEA",
       location: "viva",
-      barcode: "123456789"
+      barcode: "123456789",
     },
     {
       id: "2",
@@ -41,7 +41,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 12,
       category: "CAFEA",
       location: "viva",
-      barcode: "223456789"
+      barcode: "223456789",
     },
     {
       id: "3",
@@ -49,7 +49,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 7,
       category: "BAUTURI",
       location: "viva",
-      barcode: "323456789"
+      barcode: "323456789",
     },
     {
       id: "4",
@@ -57,7 +57,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 15,
       category: "DESERT",
       location: "viva",
-      barcode: "423456789"
+      barcode: "423456789",
     },
     {
       id: "hidden1",
@@ -66,10 +66,10 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       category: "ASCUNSE",
       location: "viva",
       barcode: "999999999",
-      hidden: true
-    }
+      hidden: true,
+    },
   ];
-  
+
   const cantinaProducts: Product[] = [
     {
       id: "5",
@@ -77,7 +77,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 25,
       category: "MENIURI",
       location: "cantina",
-      barcode: "523456789"
+      barcode: "523456789",
     },
     {
       id: "6",
@@ -85,7 +85,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 28,
       category: "MENIURI",
       location: "cantina",
-      barcode: "623456789"
+      barcode: "623456789",
     },
     {
       id: "7",
@@ -93,7 +93,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 5,
       category: "BAUTURI",
       location: "cantina",
-      barcode: "723456789"
+      barcode: "723456789",
     },
     {
       id: "8",
@@ -101,7 +101,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       price: 12,
       category: "MIC DEJUN",
       location: "cantina",
-      barcode: "823456789"
+      barcode: "823456789",
     },
     {
       id: "hidden2",
@@ -110,13 +110,13 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       category: "ASCUNSE",
       location: "cantina",
       barcode: "888888888",
-      hidden: true
-    }
+      hidden: false,
+    },
   ];
-  
+
   localStorage.setItem("viva_products", JSON.stringify(vivaProducts));
   localStorage.setItem("cantina_products", JSON.stringify(cantinaProducts));
-  
+
   return location === "viva" ? vivaProducts : cantinaProducts;
 };
 
@@ -135,7 +135,7 @@ export const addProduct = (product: Product) => {
 export const updateProduct = (product: Product) => {
   const key = `${product.location}_products`;
   const products = getProducts(product.location);
-  const updatedProducts = products.map((p: Product) => 
+  const updatedProducts = products.map((p: Product) =>
     p.id === product.id ? product : p
   );
   localStorage.setItem(key, JSON.stringify(updatedProducts));
