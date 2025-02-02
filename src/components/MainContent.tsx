@@ -34,12 +34,16 @@ export const MainContent = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProducts = products.filter((product) => {
+    // Don't show hidden products in the grid
+    if (product.hidden && !searchQuery) return false;
+    
     const matchesCategory = selectedCategory
       ? product.category === selectedCategory
       : true;
     const matchesSearch = searchQuery
-      ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.barcode?.includes(searchQuery)
+      ? (product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+         product.barcode?.includes(searchQuery)) &&
+        !product.hidden
       : true;
     return matchesCategory && matchesSearch;
   });

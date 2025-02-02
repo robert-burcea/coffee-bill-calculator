@@ -5,6 +5,7 @@ export interface Product {
   location: "cantina" | "viva";
   category: string;
   barcode?: string;
+  hidden?: boolean;
 }
 
 export interface BillItem {

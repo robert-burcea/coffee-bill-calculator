@@ -16,6 +16,7 @@ export const CategoryBar = ({
   location,
 }: CategoryBarProps) => {
   const isMobile = useIsMobile();
+  const visibleCategories = categories.filter(category => category !== "ASCUNSE");
 
   return (
     <div
@@ -49,7 +50,7 @@ export const CategoryBar = ({
           >
             Toate
           </button>
-          {categories.map((category) => (
+          {visibleCategories.map((category) => (
             <button
               key={category}
               onClick={() => onSelectCategory(category)}

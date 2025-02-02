@@ -18,8 +18,13 @@ export const clearBills = () => {
   localStorage.removeItem("bills");
 };
 
+const HIDDEN_CATEGORIES = {
+  cantina: ["ASCUNSE"],
+  viva: ["ASCUNSE"]
+};
+
 export const initializeProducts = () => {
-  const products = [
+  const vivaProducts = [
     {
       id: "1",
       name: "Espresso",
@@ -53,6 +58,18 @@ export const initializeProducts = () => {
       barcode: "423456789"
     },
     {
+      id: "hidden1",
+      name: "Produs Ascuns",
+      price: 10,
+      category: "ASCUNSE",
+      location: "viva",
+      barcode: "999999999",
+      hidden: true
+    }
+  ];
+  
+  const cantinaProducts = [
+    {
       id: "5",
       name: "Meniu 1",
       price: 25,
@@ -83,9 +100,41 @@ export const initializeProducts = () => {
       category: "MIC DEJUN",
       location: "cantina",
       barcode: "823456789"
+    },
+    {
+      id: "hidden2",
+      name: "Produs Ascuns Cantina",
+      price: 15,
+      category: "ASCUNSE",
+      location: "cantina",
+      barcode: "888888888",
+      hidden: true
     }
   ];
   
-  localStorage.setItem("products", JSON.stringify(products));
-  return products;
+  localStorage.setItem("viva_products", JSON.stringify(vivaProducts));
+  localStorage.setItem("cantina_products", JSON.stringify(cantinaProducts));
+  
+  return location === "viva" ? vivaProducts : cantinaProducts;
+};
+
+export const getProducts = (location: "cantina" | "viva") => {
+  const key = `${location}_products`;
+  const products = localStorage.getItem(key);
+  return products ? JSON.parse(products) : initializeProducts(location);
+};
+
+export const addProduct = (product: Product) => {
+  const key = `${product.location}_products`;
+  const products = getProducts(product.location);
+  localStorage.setItem(key, JSON.stringify([...products, product]));
+};
+
+export const updateProduct = (product: Product) => {
+  const key = `${product.location}_products`;
+  const products = getProducts(product.location);
+  const updatedProducts = products.map((p: Product) => 
+    p.id === product.id ? product : p
+  );
+  localStorage.setItem(key, JSON.stringify(updatedProducts));
 };
