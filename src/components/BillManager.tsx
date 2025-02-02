@@ -6,7 +6,7 @@ import { addBill, removeLastBill, clearBills } from "@/utils/storage";
 
 interface BillManagerProps {
   bills: Bill[];
-  setBills: (bills: Bill[]) => void;
+  setBills: (bills: Bill[] | ((prev: Bill[]) => Bill[])) => void;
   currentBill: BillItem[];
   setCurrentBill: (items: BillItem[]) => void;
   location: "cantina" | "viva";
@@ -49,7 +49,7 @@ export const BillManager = ({
     };
 
     addBill(newBill);
-    setBills((prev) => [...prev, newBill]);
+    setBills((prev: Bill[]) => [...prev, newBill]);
     setCurrentBill([]);
     toast({
       title: "Succes",
@@ -70,7 +70,7 @@ export const BillManager = ({
 
   const handleDeleteLastBill = () => {
     removeLastBill();
-    setBills((prev) => prev.slice(0, -1));
+    setBills((prev: Bill[]) => prev.slice(0, -1));
     setConfirmDeleteLast(false);
     setIsSheetOpen(false);
     toast({
