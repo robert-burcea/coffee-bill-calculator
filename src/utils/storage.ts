@@ -110,6 +110,7 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       category: "ASCUNSE",
       location: "cantina",
       barcode: "888888888",
+      hidden: false,
     },
   ];
 
