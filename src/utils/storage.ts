@@ -1,9 +1,11 @@
+import { Bill, Product } from "@/types";
+
 export const getBills = () => {
   const bills = localStorage.getItem("bills");
   return bills ? JSON.parse(bills) : [];
 };
 
-export const addBill = (bill) => {
+export const addBill = (bill: Bill) => {
   const bills = getBills();
   localStorage.setItem("bills", JSON.stringify([...bills, bill]));
 };
@@ -23,8 +25,8 @@ const HIDDEN_CATEGORIES = {
   viva: ["ASCUNSE"]
 };
 
-export const initializeProducts = () => {
-  const vivaProducts = [
+export const initializeProducts = (location: "cantina" | "viva") => {
+  const vivaProducts: Product[] = [
     {
       id: "1",
       name: "Espresso",
@@ -68,7 +70,7 @@ export const initializeProducts = () => {
     }
   ];
   
-  const cantinaProducts = [
+  const cantinaProducts: Product[] = [
     {
       id: "5",
       name: "Meniu 1",
