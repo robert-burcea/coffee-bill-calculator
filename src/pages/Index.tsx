@@ -31,7 +31,7 @@ const Index = ({ location }: IndexProps) => {
 
   useEffect(() => {
     const storedProducts = localStorage.getItem("products");
-    const initialProducts = storedProducts ? JSON.parse(storedProducts) : initializeProducts();
+    const initialProducts = storedProducts ? JSON.parse(storedProducts) : initializeProducts(location);
     const filteredProducts = initialProducts.filter(
       (product: Product) => product.location === location
     );
