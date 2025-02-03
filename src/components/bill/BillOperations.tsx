@@ -69,6 +69,14 @@ export const useBillOperations = ({
   };
 
   const handleDeleteLastBill = () => {
+    if (bills.length === 0) {
+      toast({
+        title: "Eroare",
+        description: "Nu există bonuri de șters",
+        variant: "destructive",
+      });
+      return;
+    }
     removeLastBill();
     setBills((prev: Bill[]) => prev.slice(0, -1));
     setConfirmDeleteLast(false);

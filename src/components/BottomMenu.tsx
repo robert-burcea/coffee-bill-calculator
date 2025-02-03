@@ -38,6 +38,16 @@ export const BottomMenu = ({
   const navigate = useNavigate();
   const targetLocation = location === "cantina" ? "viva" : "cantina";
 
+  const handleDeleteLastBill = () => {
+    setIsSheetOpen(false);
+    onDeleteLastBill();
+  };
+
+  const handleClearDay = () => {
+    setIsSheetOpen(false);
+    onClearDay();
+  };
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
@@ -81,7 +91,7 @@ export const BottomMenu = ({
                   {targetLocation.toUpperCase()}
                 </Button>
                 <Button
-                  onClick={onDeleteLastBill}
+                  onClick={handleDeleteLastBill}
                   variant="outline"
                   className="w-full h-14 text-lg font-medium"
                 >
@@ -98,7 +108,7 @@ export const BottomMenu = ({
                   Evidenta bonuri
                 </Button>
                 <Button
-                  onClick={onClearDay}
+                  onClick={handleClearDay}
                   variant="outline"
                   className="w-full h-14 text-lg font-medium text-red-500 hover:text-red-700"
                 >
@@ -110,7 +120,7 @@ export const BottomMenu = ({
         </div>
         <div className="hidden md:flex gap-2">
           <Button
-            onClick={onDeleteLastBill}
+            onClick={handleDeleteLastBill}
             variant="outline"
             className="h-14 px-8 text-lg font-medium"
           >
@@ -127,7 +137,7 @@ export const BottomMenu = ({
             Evidenta bonuri
           </Button>
           <Button
-            onClick={onClearDay}
+            onClick={handleClearDay}
             variant="outline"
             className="h-14 px-8 text-lg font-medium text-red-500 hover:text-red-700"
           >
