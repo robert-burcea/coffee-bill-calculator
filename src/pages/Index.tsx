@@ -20,6 +20,8 @@ const Index = ({ location }: IndexProps) => {
   const [showDailyTotal, setShowDailyTotal] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [confirmClearDay, setConfirmClearDay] = useState(false);
+  const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
 
   const handleProductClick = (product: Product) => {
     setCurrentBill((prev) => {
@@ -84,10 +86,10 @@ const Index = ({ location }: IndexProps) => {
             billManagerElement.click();
           }
         }}
-        onDeleteLastBill={() => {}}
+        onDeleteLastBill={() => setConfirmDeleteLast(true)}
         onToggleBillHistory={() => setShowBillHistory(!showBillHistory)}
         onToggleDailyTotal={() => setShowDailyTotal(!showDailyTotal)}
-        onClearDay={() => {}}
+        onClearDay={() => setConfirmClearDay(true)}
         showBillHistory={showBillHistory}
         showDailyTotal={showDailyTotal}
         isSheetOpen={isSheetOpen}
