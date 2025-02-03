@@ -40,16 +40,13 @@ const Index = ({ location }: IndexProps) => {
   };
 
   const CATEGORIES = {
-    cantina: ["MENIURI", "BAUTURI", "MIC DEJUN"],
+    cantina: ["MENIURI", "BAUTURI", "MIC DEJUN", "PATISERIE", "SNACKS"],
     viva: ["CAFEA", "BAUTURI", "DESERT"],
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <ProductManager
-        location={location}
-        onProductsLoaded={setProducts}
-      />
+      <ProductManager location={location} onProductsLoaded={setProducts} />
       <BillManager
         bills={bills}
         setBills={setBills}
@@ -80,7 +77,9 @@ const Index = ({ location }: IndexProps) => {
 
       <BottomMenu
         onCheckout={() => {
-          const billManagerElement = document.querySelector('button[data-checkout-trigger]');
+          const billManagerElement = document.querySelector(
+            "button[data-checkout-trigger]"
+          );
           if (billManagerElement instanceof HTMLButtonElement) {
             billManagerElement.click();
           }
