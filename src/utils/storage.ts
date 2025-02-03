@@ -12,12 +12,14 @@ export const addBill = (bill: Bill) => {
 
 export const removeLastBill = () => {
   const bills = getBills();
-  bills.pop();
-  localStorage.setItem("bills", JSON.stringify(bills));
+  if (bills.length > 0) {
+    bills.pop(); // Remove the last bill
+    localStorage.setItem("bills", JSON.stringify(bills));
+  }
 };
 
 export const clearBills = () => {
-  localStorage.removeItem("bills");
+  localStorage.setItem("bills", JSON.stringify([]));
 };
 
 const HIDDEN_CATEGORIES = {
