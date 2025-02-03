@@ -35,13 +35,20 @@ export const BillManager = ({
   });
 
   return (
-    <BillConfirmDialogs
-      confirmClearDay={confirmClearDay}
-      confirmDeleteLast={confirmDeleteLast}
-      onClearDay={handleClearDay}
-      onDeleteLastBill={handleDeleteLastBill}
-      setConfirmClearDay={setConfirmClearDay}
-      setConfirmDeleteLast={setConfirmDeleteLast}
-    />
+    <>
+      <button 
+        onClick={handleCheckout}
+        className="hidden"
+        data-checkout-trigger
+      />
+      <BillConfirmDialogs
+        confirmClearDay={confirmClearDay}
+        confirmDeleteLast={confirmDeleteLast}
+        onClearDay={handleClearDay}
+        onDeleteLastBill={handleDeleteLastBill}
+        setConfirmClearDay={setConfirmClearDay}
+        setConfirmDeleteLast={setConfirmDeleteLast}
+      />
+    </>
   );
 };

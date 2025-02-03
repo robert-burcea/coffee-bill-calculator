@@ -79,7 +79,12 @@ const Index = ({ location }: IndexProps) => {
       </div>
 
       <BottomMenu
-        onCheckout={() => {}}
+        onCheckout={() => {
+          const billManagerElement = document.querySelector('button[data-checkout-trigger]');
+          if (billManagerElement instanceof HTMLButtonElement) {
+            billManagerElement.click();
+          }
+        }}
         onDeleteLastBill={() => {}}
         onToggleBillHistory={() => setShowBillHistory(!showBillHistory)}
         onToggleDailyTotal={() => setShowDailyTotal(!showDailyTotal)}
