@@ -1,6 +1,5 @@
-import { useState } from "react";
+
 import { Bill, BillItem } from "@/types";
-import { BillConfirmDialogs } from "./bill/BillConfirmDialogs";
 import { useBillOperations } from "./bill/BillOperations";
 
 interface BillManagerProps {
@@ -20,35 +19,22 @@ export const BillManager = ({
   location,
   setIsSheetOpen,
 }: BillManagerProps) => {
-  const [confirmClearDay, setConfirmClearDay] = useState(false);
-  const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
-
-  const { handleCheckout, handleClearDay, handleDeleteLastBill } = useBillOperations({
+  const { handleCheckout } = useBillOperations({
     bills,
     setBills,
     currentBill,
     setCurrentBill,
     location,
     setIsSheetOpen,
-    setConfirmClearDay,
-    setConfirmDeleteLast,
+    setConfirmClearDay: () => {},
+    setConfirmDeleteLast: () => {},
   });
 
   return (
-    <>
-      <button 
-        onClick={handleCheckout}
-        className="hidden"
-        data-checkout-trigger
-      />
-      <BillConfirmDialogs
-        confirmClearDay={confirmClearDay}
-        confirmDeleteLast={confirmDeleteLast}
-        onClearDay={handleClearDay}
-        onDeleteLastBill={handleDeleteLastBill}
-        setConfirmClearDay={setConfirmClearDay}
-        setConfirmDeleteLast={setConfirmDeleteLast}
-      />
-    </>
+    <button 
+      onClick={handleCheckout}
+      className="hidden"
+      data-checkout-trigger
+    />
   );
 };

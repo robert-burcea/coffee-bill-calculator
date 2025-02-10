@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Product, BillItem, Bill } from "@/types";
 import { MenuBar } from "@/components/MenuBar";
@@ -7,6 +8,8 @@ import { CategoryBar } from "@/components/CategoryBar";
 import { ProductManager } from "@/components/ProductManager";
 import { BillManager } from "@/components/BillManager";
 import { getBills } from "@/utils/storage";
+import { BillConfirmDialogs } from "@/components/bill/BillConfirmDialogs";
+import { useBillOperations } from "@/components/bill/BillOperations";
 
 interface IndexProps {
   location: "cantina" | "viva";
@@ -22,6 +25,17 @@ const Index = ({ location }: IndexProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [confirmClearDay, setConfirmClearDay] = useState(false);
   const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
+
+  const { handleCheckout, handleClearDay, handleDeleteLastBill } = useBillOperations({
+    bills,
+    setBills,
+    currentBill,
+    setCurrentBill,
+    location,
+    setIsSheetOpen,
+    setConfirmClearDay,
+    setConfirmDeleteLast,
+  });
 
   const handleProductClick = (product: Product) => {
     setCurrentBill((prev) => {
@@ -56,6 +70,14 @@ const Index = ({ location }: IndexProps) => {
         setCurrentBill={setCurrentBill}
         location={location}
         setIsSheetOpen={setIsSheetOpen}
+      />
+      <BillConfirmDialogs
+        confirmClearDay={confirmClearDay}
+        confirmDeleteLast={confirmDeleteLast}
+        onClearDay={handleClearDay}
+        onDeleteLastBill={handleDeleteLastBill}
+        setConfirmClearDay={setConfirmClearDay}
+        setConfirmDeleteLast={setConfirmDeleteLast}
       />
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1">
         <MenuBar location={location} />
