@@ -97,5 +97,5 @@ export const downloadFile = (content: string, fileName: string, contentType: str
   a.href = URL.createObjectURL(file);
   a.download = fileName;
   a.click();
-  URL.revoObjectURL(a.href);
+  URL.revokeObjectURL(a.href);
 };
