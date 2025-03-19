@@ -15,22 +15,19 @@ import {
 import { InventoryProductCard } from "@/components/inventory/InventoryProductCard";
 import { InventoryProgress } from "@/components/inventory/InventoryProgress";
 import { InventoryExport } from "@/components/inventory/InventoryExport";
-import { useParams } from "react-router-dom";
 
 interface InventoryPageProps {
   location: "cantina" | "viva";
+  category?: string;
 }
 
-const InventoryPage = ({ location }: InventoryPageProps) => {
+const InventoryPage = ({ location, category }: InventoryPageProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [inventory, setInventory] = useState<InventoryData>({});
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [inventoryStatus, setInventoryStatus] = useState({ total: 0, completed: 0 });
   
-  // Get the category from URL params
-  const { category } = useParams<{ category?: string }>();
-
   useEffect(() => {
     // Load only products for this location
     const storedProducts = getProducts(location);
