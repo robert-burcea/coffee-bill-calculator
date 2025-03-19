@@ -33,12 +33,19 @@ export const updateProductInventory = (
 };
 
 // Get a count of how many products need inventory
-export const getInventoryStatus = (location: "cantina" | "viva"): { total: number; completed: number } => {
-  const products = getProducts(location).filter(p => !p.hidden && p.location === location);
+export const getInventoryStatus = (location: "cantina" | "viva", category?: string): { total: number; completed: number } => {
+  const allProducts = getProducts(location).filter(p => !p.hidden && p.location === location);
+  
+  // Filter by category if specified
+  const products = category 
+    ? allProducts.filter(p => p.category === category)
+    : allProducts;
+    
   const inventory = getInventory(location);
   
   const total = products.length;
-  const completed = Object.keys(inventory).length;
+  // Only count completed items that are part of the current category filter
+  const completed = products.filter(p => inventory[p.id] !== undefined).length;
   
   return { total, completed };
 };
@@ -69,8 +76,14 @@ export const formatInventoryDate = (timestamp: number): string => {
 };
 
 // Export inventory data as CSV
-export const exportInventoryAsCSV = (location: "cantina" | "viva"): string => {
-  const products = getProducts(location).filter(p => !p.hidden && p.location === location);
+export const exportInventoryAsCSV = (location: "cantina" | "viva", category?: string): string => {
+  const allProducts = getProducts(location).filter(p => !p.hidden && p.location === location);
+  
+  // Filter by category if specified
+  const products = category 
+    ? allProducts.filter(p => p.category === category)
+    : allProducts;
+    
   const inventory = getInventory(location);
   
   // Create CSV header

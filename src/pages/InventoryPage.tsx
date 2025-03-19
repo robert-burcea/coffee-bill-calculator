@@ -15,6 +15,7 @@ import {
 import { InventoryProductCard } from "@/components/inventory/InventoryProductCard";
 import { InventoryProgress } from "@/components/inventory/InventoryProgress";
 import { InventoryExport } from "@/components/inventory/InventoryExport";
+import { useParams } from "react-router-dom";
 
 interface InventoryPageProps {
   location: "cantina" | "viva";
@@ -26,20 +27,34 @@ const InventoryPage = ({ location }: InventoryPageProps) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [inventoryStatus, setInventoryStatus] = useState({ total: 0, completed: 0 });
+  
+  // Get the category from URL params
+  const { category } = useParams<{ category?: string }>();
 
   useEffect(() => {
     // Load only products for this location
     const storedProducts = getProducts(location);
-    setProducts(storedProducts.filter((p: Product) => !p.hidden && p.location === location));
+    
+    // Filter products by category if category is specified
+    const productsForLocation = storedProducts.filter((p: Product) => {
+      if (category) {
+        return !p.hidden && p.location === location && p.category === category.toUpperCase();
+      }
+      return !p.hidden && p.location === location;
+    });
+    
+    setProducts(productsForLocation);
     
     // Load inventory
     const storedInventory = getInventory(location);
     setInventory(storedInventory);
     
-    // Get inventory status
-    const status = getInventoryStatus(location);
+    // Get inventory status - only count products in the current category if specified
+    const status = category 
+      ? getInventoryStatus(location, category.toUpperCase())
+      : getInventoryStatus(location);
     setInventoryStatus(status);
-  }, [location]);
+  }, [location, category]);
 
   useEffect(() => {
     if (searchQuery.length >= 2) {
@@ -72,23 +87,34 @@ const InventoryPage = ({ location }: InventoryPageProps) => {
     };
     setInventory(updatedInventory);
     
-    // Update inventory status
-    const status = getInventoryStatus(location);
+    // Update inventory status - consider the category if specified
+    const status = category 
+      ? getInventoryStatus(location, category.toUpperCase())
+      : getInventoryStatus(location);
     setInventoryStatus(status);
   };
 
   const handleExportInventory = () => {
-    const csvContent = exportInventoryAsCSV(location);
+    const csvContent = category 
+      ? exportInventoryAsCSV(location, category.toUpperCase())
+      : exportInventoryAsCSV(location);
+    
     const today = new Date().toISOString().split('T')[0];
-    downloadFile(csvContent, `inventar_${location}_${today}.csv`, 'text/csv;charset=utf-8;');
+    const filename = category 
+      ? `inventar_${location}_${category}_${today}.csv`
+      : `inventar_${location}_${today}.csv`;
+      
+    downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
   };
+
+  const categoryTitle = category ? ` - ${category.toUpperCase()}` : '';
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <MenuBar location={location} />
       
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">Inventar {location === "cantina" ? "Cantina" : "Viva"}</h1>
+        <h1 className="text-2xl font-bold mb-4">Inventar {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
         
         <InventoryProgress
           total={inventoryStatus.total}
@@ -114,6 +140,12 @@ const InventoryPage = ({ location }: InventoryPageProps) => {
           {filteredProducts.length === 0 && searchQuery.length > 0 && (
             <div className="col-span-full text-center py-8 text-gray-500">
               Nu a fost găsit niciun produs
+            </div>
+          )}
+          
+          {filteredProducts.length === 0 && searchQuery.length === 0 && (
+            <div className="col-span-full text-center py-8 text-gray-500">
+              Nu există produse în această categorie
             </div>
           )}
         </div>
