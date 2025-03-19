@@ -1,3 +1,4 @@
+
 export interface Product {
   id: string;
   name: string;
@@ -19,4 +20,14 @@ export interface Bill {
   total: number;
   timestamp: number;
   location: "cantina" | "viva";
+}
+
+export interface InventoryItem {
+  productId: string;
+  count: number;
+  lastUpdated: number; // timestamp
+}
+
+export interface InventoryData {
+  [productId: string]: InventoryItem;
 }
