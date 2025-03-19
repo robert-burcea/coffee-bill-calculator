@@ -34,10 +34,10 @@ export const updateProductInventory = (
 
 // Get a count of how many products need inventory
 export const getInventoryStatus = (location: "cantina" | "viva"): { total: number; completed: number } => {
-  const products = getProducts(location);
+  const products = getProducts(location).filter(p => !p.hidden && p.location === location);
   const inventory = getInventory(location);
   
-  const total = products.filter(p => !p.hidden).length;
+  const total = products.length;
   const completed = Object.keys(inventory).length;
   
   return { total, completed };
@@ -70,7 +70,7 @@ export const formatInventoryDate = (timestamp: number): string => {
 
 // Export inventory data as CSV
 export const exportInventoryAsCSV = (location: "cantina" | "viva"): string => {
-  const products = getProducts(location);
+  const products = getProducts(location).filter(p => !p.hidden && p.location === location);
   const inventory = getInventory(location);
   
   // Create CSV header
@@ -78,15 +78,13 @@ export const exportInventoryAsCSV = (location: "cantina" | "viva"): string => {
   
   // Add each product
   products.forEach(product => {
-    if (!product.hidden) {
-      const inventoryItem = inventory[product.id];
-      const count = inventoryItem ? inventoryItem.count : 0;
-      const lastUpdated = inventoryItem 
-        ? formatInventoryDate(inventoryItem.lastUpdated) 
-        : "Neinventariat";
-      
-      csv += `"${product.name}","${product.barcode || ''}","${product.category}",${product.price},${count},"${lastUpdated}"\n`;
-    }
+    const inventoryItem = inventory[product.id];
+    const count = inventoryItem ? inventoryItem.count : 0;
+    const lastUpdated = inventoryItem 
+      ? formatInventoryDate(inventoryItem.lastUpdated) 
+      : "Neinventariat";
+    
+    csv += `"${product.name}","${product.barcode || ''}","${product.category}",${product.price},${count},"${lastUpdated}"\n`;
   });
   
   return csv;
@@ -99,5 +97,5 @@ export const downloadFile = (content: string, fileName: string, contentType: str
   a.href = URL.createObjectURL(file);
   a.download = fileName;
   a.click();
-  URL.revokeObjectURL(a.href);
+  URL.revoObjectURL(a.href);
 };

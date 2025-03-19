@@ -28,9 +28,9 @@ const InventoryPage = ({ location }: InventoryPageProps) => {
   const [inventoryStatus, setInventoryStatus] = useState({ total: 0, completed: 0 });
 
   useEffect(() => {
-    // Load all products
+    // Load only products for this location
     const storedProducts = getProducts(location);
-    setProducts(storedProducts.filter((p: Product) => !p.hidden));
+    setProducts(storedProducts.filter((p: Product) => !p.hidden && p.location === location));
     
     // Load inventory
     const storedInventory = getInventory(location);
