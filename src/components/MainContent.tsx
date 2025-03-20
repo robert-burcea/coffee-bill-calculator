@@ -53,14 +53,14 @@ export const MainContent = ({
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full">
       <div
         className={cn(
           "grid md:grid-cols-[2fr,1fr] gap-6 mb-20",
           !isMobile && "ml-52 mr-4"
         )}
       >
-        <div>
+        <div className="flex flex-col w-full">
           <SearchBar onSearch={setSearchQuery} />
           <ProductGrid
             products={filteredProducts}

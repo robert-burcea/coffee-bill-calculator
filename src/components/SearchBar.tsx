@@ -18,14 +18,14 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
   }, [searchTerm, onSearch]);
 
   return (
-    <form className="flex flex-wrap gap-2 w-full mb-4 p-4">
+    <form className="w-full px-2 sm:px-4 py-2 sm:py-4">
       <Input
         type="text"
         name="search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Caută după nume, cod de bare sau cod de identificare..."
-        className="flex-1 min-w-[200px]"
+        placeholder="Caută după nume, cod de bare..."
+        className="w-full max-w-full"
       />
     </form>
   );
