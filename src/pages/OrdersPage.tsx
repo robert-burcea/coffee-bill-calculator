@@ -1,37 +1,37 @@
 
 import { useState, useEffect } from "react";
-import { InventoryData, InventoryItem, Product } from "@/types";
+import { Product, OrderData, OrderItem } from "@/types";
 import { MenuBar } from "@/components/MenuBar";
 import { getProducts } from "@/utils/storage";
 import { SearchBar } from "@/components/SearchBar";
 import { 
-  getInventory, 
-  updateProductInventory, 
-  getInventoryStatus, 
-  wasInventoriedToday,
+  getOrders, 
+  updateProductOrder, 
+  getOrdersStatus, 
+  exportOrdersAsCSV,
   downloadFile,
-  exportInventoryAsCSV,
-  checkAndResetInventory
-} from "@/utils/inventory";
-import { InventoryProductCard } from "@/components/inventory/InventoryProductCard";
-import { InventoryProgress } from "@/components/inventory/InventoryProgress";
-import { InventoryExport } from "@/components/inventory/InventoryExport";
+  checkAndResetOrders
+} from "@/utils/orders";
+import { OrderProductCard } from "@/components/orders/OrderProductCard";
+import { OrderProgress } from "@/components/orders/OrderProgress";
+import { OrdersExport } from "@/components/orders/OrdersExport";
+import { toast } from "@/hooks/use-toast";
 
-interface InventoryPageProps {
+interface OrdersPageProps {
   location: "cantina" | "viva";
   category?: string;
 }
 
-const InventoryPage = ({ location, category }: InventoryPageProps) => {
+const OrdersPage = ({ location, category }: OrdersPageProps) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [inventory, setInventory] = useState<InventoryData>({});
+  const [orders, setOrders] = useState<OrderData>({});
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [inventoryStatus, setInventoryStatus] = useState({ total: 0, completed: 0 });
+  const [orderStatus, setOrderStatus] = useState({ total: 0, completed: 0 });
   
   useEffect(() => {
-    // Check for daily reset of inventory
-    checkAndResetInventory(location);
+    // Check for daily reset of orders
+    checkAndResetOrders(location);
     
     // Load only products for this location
     const storedProducts = getProducts(location);
@@ -46,15 +46,15 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
     
     setProducts(productsForLocation);
     
-    // Load inventory
-    const storedInventory = getInventory(location);
-    setInventory(storedInventory);
+    // Load orders
+    const storedOrders = getOrders(location);
+    setOrders(storedOrders);
     
-    // Get inventory status - only count products in the current category if specified
+    // Get order status - only count products in the current category if specified
     const status = category 
-      ? getInventoryStatus(location, category.toUpperCase())
-      : getInventoryStatus(location);
-    setInventoryStatus(status);
+      ? getOrdersStatus(location, category.toUpperCase())
+      : getOrdersStatus(location);
+    setOrderStatus(status);
   }, [location, category]);
 
   useEffect(() => {
@@ -75,38 +75,46 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
     setSearchQuery(query);
   };
 
-  const handleUpdateInventory = (productId: string, count: number) => {
-    updateProductInventory(location, productId, count);
+  const handleUpdateOrder = (productId: string, count: number) => {
+    updateProductOrder(location, productId, count);
     
     // Update local state
-    const updatedInventory = { 
-      ...inventory,
+    const updatedOrders = { 
+      ...orders,
       [productId]: {
         productId,
         count,
         lastUpdated: Date.now()
       }
     };
-    setInventory(updatedInventory);
+    setOrders(updatedOrders);
     
-    // Update inventory status - consider the category if specified
+    // Update order status - consider the category if specified
     const status = category 
-      ? getInventoryStatus(location, category.toUpperCase())
-      : getInventoryStatus(location);
-    setInventoryStatus(status);
+      ? getOrdersStatus(location, category.toUpperCase())
+      : getOrdersStatus(location);
+    setOrderStatus(status);
   };
 
-  const handleExportInventory = () => {
+  const handleExportOrder = () => {
     const csvContent = category 
-      ? exportInventoryAsCSV(location, category.toUpperCase())
-      : exportInventoryAsCSV(location);
+      ? exportOrdersAsCSV(location, category.toUpperCase())
+      : exportOrdersAsCSV(location);
     
     const today = new Date().toISOString().split('T')[0];
     const filename = category 
-      ? `inventar_${location}_${category}_${today}.csv`
-      : `inventar_${location}_${today}.csv`;
+      ? `comanda_${location}_${category}_${today}.csv`
+      : `comanda_${location}_${today}.csv`;
       
     downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
+  };
+  
+  const handleFinalizeOrder = () => {
+    // We're just showing a toast notification since the order is already saved in real-time
+    toast({
+      title: "Comandă finalizată",
+      description: `Comanda pentru ${location === "cantina" ? "Cantina" : "Viva"} a fost finalizată cu succes.`,
+    });
   };
 
   const categoryTitle = category ? ` - ${category.toUpperCase()}` : '';
@@ -116,26 +124,26 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
       <MenuBar location={location} />
       
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">Inventar {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
+        <h1 className="text-2xl font-bold mb-4">Comenzi {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
         
-        <InventoryProgress
-          total={inventoryStatus.total}
-          completed={inventoryStatus.completed}
+        <OrderProgress
+          total={orderStatus.total}
+          completed={orderStatus.completed}
         />
         
         <div className="mb-4">
           <SearchBar onSearch={handleSearch} />
         </div>
         
-        <InventoryExport onExport={handleExportInventory} />
+        <OrdersExport onExport={handleExportOrder} onFinalize={handleFinalizeOrder} />
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
           {filteredProducts.map(product => (
-            <InventoryProductCard
+            <OrderProductCard
               key={product.id}
               product={product}
-              inventoryItem={inventory[product.id]}
-              onUpdate={handleUpdateInventory}
+              orderItem={orders[product.id]}
+              onUpdate={handleUpdateOrder}
             />
           ))}
           
@@ -156,4 +164,4 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
   );
 };
 
-export default InventoryPage;
+export default OrdersPage;

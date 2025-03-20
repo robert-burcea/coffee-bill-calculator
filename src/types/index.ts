@@ -7,6 +7,8 @@ export interface Product {
   category: string;
   barcode?: string;
   hidden?: boolean;
+  identificationCode?: string;
+  producer?: string;
 }
 
 export interface BillItem {
@@ -30,4 +32,14 @@ export interface InventoryItem {
 
 export interface InventoryData {
   [productId: string]: InventoryItem;
+}
+
+export interface OrderItem {
+  productId: string;
+  count: number;
+  lastUpdated: number;
+}
+
+export interface OrderData {
+  [productId: string]: OrderItem;
 }

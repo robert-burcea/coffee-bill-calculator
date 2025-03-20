@@ -75,7 +75,7 @@ export const formatInventoryDate = (timestamp: number): string => {
   });
 };
 
-// Export inventory data as CSV
+// Export inventory data as CSV grouped by category
 export const exportInventoryAsCSV = (location: "cantina" | "viva", category?: string): string => {
   const allProducts = getProducts(location).filter(p => !p.hidden && p.location === location);
   
@@ -86,18 +86,34 @@ export const exportInventoryAsCSV = (location: "cantina" | "viva", category?: st
     
   const inventory = getInventory(location);
   
-  // Create CSV header
-  let csv = "Nume Produs,Cod Produs,Categorie,Pret,Cantitate,Data Actualizare\n";
+  // Group products by category
+  const categorizedProducts: Record<string, Product[]> = {};
   
-  // Add each product
   products.forEach(product => {
-    const inventoryItem = inventory[product.id];
-    const count = inventoryItem ? inventoryItem.count : 0;
-    const lastUpdated = inventoryItem 
-      ? formatInventoryDate(inventoryItem.lastUpdated) 
-      : "Neinventariat";
+    if (!categorizedProducts[product.category]) {
+      categorizedProducts[product.category] = [];
+    }
+    categorizedProducts[product.category].push(product);
+  });
+  
+  // Create CSV with category headers
+  let csv = "";
+  
+  Object.keys(categorizedProducts).forEach(category => {
+    csv += `CATEGORIE: ${category}\n`;
+    csv += "Nume Produs,Cod Produs,Cod Identificare,Producător,Categorie,Pret,Cantitate,Data Actualizare\n";
     
-    csv += `"${product.name}","${product.barcode || ''}","${product.category}",${product.price},${count},"${lastUpdated}"\n`;
+    categorizedProducts[category].forEach(product => {
+      const inventoryItem = inventory[product.id];
+      const count = inventoryItem ? inventoryItem.count : 0;
+      const lastUpdated = inventoryItem 
+        ? formatInventoryDate(inventoryItem.lastUpdated) 
+        : "Neinventariat";
+      
+      csv += `"${product.name}","${product.barcode || ''}","${product.identificationCode || ''}","${product.producer || ''}","${product.category}",${product.price},${count},"${lastUpdated}"\n`;
+    });
+    
+    csv += "\n"; // Add empty line between categories
   });
   
   return csv;
@@ -111,4 +127,21 @@ export const downloadFile = (content: string, fileName: string, contentType: str
   a.download = fileName;
   a.click();
   URL.revokeObjectURL(a.href);
+};
+
+// Reset inventory for a location
+export const resetInventory = (location: "cantina" | "viva"): void => {
+  saveInventory(location, {});
+};
+
+// Check if inventory needs to be reset (new day)
+export const checkAndResetInventory = (location: "cantina" | "viva"): void => {
+  const lastReset = localStorage.getItem(`${location}_inventory_last_reset`);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  if (!lastReset || new Date(parseInt(lastReset)).getTime() < today.getTime()) {
+    resetInventory(location);
+    localStorage.setItem(`${location}_inventory_last_reset`, today.getTime().toString());
+  }
 };

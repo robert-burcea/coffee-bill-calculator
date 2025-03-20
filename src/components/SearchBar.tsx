@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
@@ -9,7 +10,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    if (searchTerm.length >= 3) {
+    if (searchTerm.length >= 2) {
       onSearch(searchTerm);
     } else if (searchTerm.length === 0) {
       onSearch("");
@@ -23,7 +24,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
         name="search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search by name or barcode..."
+        placeholder="Caută după nume, cod de bare sau cod de identificare..."
         className="flex-1 min-w-[200px]"
       />
     </form>

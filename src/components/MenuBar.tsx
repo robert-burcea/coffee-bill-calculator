@@ -1,42 +1,46 @@
 
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Package, ArrowRightLeft } from "lucide-react";
+import { Package, ClipboardCheck, ShoppingCart } from "lucide-react";
 
 interface MenuBarProps {
   location: "cantina" | "viva";
 }
 
 export const MenuBar = ({ location }: MenuBarProps) => {
-  const getLocationName = (loc: "cantina" | "viva") => {
-    return loc === "cantina" ? "Cantina" : "Viva";
-  };
-
   const otherLocation = location === "cantina" ? "viva" : "cantina";
-  const otherLocationName = getLocationName(otherLocation);
+  const locationName = location === "cantina" ? "Cantina" : "Viva";
+  const otherLocationName = location === "cantina" ? "Viva" : "Cantina";
 
   return (
-    <div className="bg-white p-4 border-b border-gray-200 flex justify-between items-center">
-      <Link to="/" className="text-blue-600 hover:text-blue-800">
-        ← Home
-      </Link>
-      <h1 className="text-xl font-bold text-center flex-1">
-        {getLocationName(location)}
-      </h1>
-      <div className="flex gap-4">
-        <Link
-          to={`/${otherLocation}`}
-          className="text-blue-600 hover:text-blue-800 flex items-center"
-        >
-          <ArrowRightLeft className="h-4 w-4 mr-1" />
-          {otherLocationName}
-        </Link>
-        <Link
-          to={`/${location}-inventory`}
-          className="text-blue-600 hover:text-blue-800 flex items-center"
-        >
-          <Package className="h-4 w-4 mr-1" />
-          Inventar
-        </Link>
+    <div className="flex flex-wrap gap-2 mb-4 items-center justify-between">
+      <div className="flex items-center">
+        <h1 className="text-xl font-bold">{locationName}</h1>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="outline" size="sm" asChild>
+          <Link to={`/${location}`}>
+            <Package className="mr-2 h-4 w-4" />
+            Produse
+          </Link>
+        </Button>
+        <Button variant="outline" size="sm" asChild>
+          <Link to={`/${location}-inventory`}>
+            <ClipboardCheck className="mr-2 h-4 w-4" />
+            Inventar
+          </Link>
+        </Button>
+        <Button variant="outline" size="sm" asChild>
+          <Link to={`/${location}-orders`}>
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Comenzi
+          </Link>
+        </Button>
+        <Button variant="secondary" size="sm" asChild>
+          <Link to={`/${otherLocation}`}>
+            Mergi la {otherLocationName}
+          </Link>
+        </Button>
       </div>
     </div>
   );

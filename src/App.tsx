@@ -9,6 +9,8 @@ import Cantina from "./pages/Cantina";
 import Viva from "./pages/Viva";
 import CantinaInventory from "./pages/CantinaInventory";
 import VivaInventory from "./pages/VivaInventory";
+import CantinaOrders from "./pages/CantinaOrders";
+import VivaOrders from "./pages/VivaOrders";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +26,12 @@ const App = () => (
           <Route path="/viva/*" element={<Viva />} />
           <Route path="/cantina-inventory" element={<CantinaInventory />} />
           <Route path="/viva-inventory" element={<VivaInventory />} />
+          <Route path="/cantina-inventory/:category" element={<CantinaInventory />} />
+          <Route path="/viva-inventory/:category" element={<VivaInventory />} />
+          <Route path="/cantina-orders" element={<CantinaOrders />} />
+          <Route path="/viva-orders" element={<VivaOrders />} />
+          <Route path="/cantina-orders/:category" element={<CantinaOrders />} />
+          <Route path="/viva-orders/:category" element={<VivaOrders />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

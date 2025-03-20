@@ -1,27 +1,27 @@
 
 import { useState } from "react";
-import { Product, InventoryItem } from "@/types";
+import { Product, OrderItem } from "@/types";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Edit, Save, CircleCheck, CircleX } from "lucide-react";
-import { wasInventoriedToday, formatInventoryDate } from "@/utils/inventory";
+import { Edit, Save, CircleCheck, CircleX, ShoppingCart } from "lucide-react";
+import { formatOrderDate } from "@/utils/orders";
 
-interface InventoryProductCardProps {
+interface OrderProductCardProps {
   product: Product;
-  inventoryItem?: InventoryItem;
+  orderItem?: OrderItem;
   onUpdate: (productId: string, count: number) => void;
 }
 
-export const InventoryProductCard = ({ 
+export const OrderProductCard = ({ 
   product, 
-  inventoryItem, 
+  orderItem, 
   onUpdate 
-}: InventoryProductCardProps) => {
+}: OrderProductCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [count, setCount] = useState(inventoryItem?.count || 0);
-  const isInventoriedToday = wasInventoriedToday(inventoryItem);
+  const [count, setCount] = useState(orderItem?.count || 0);
+  const hasOrder = orderItem !== undefined && orderItem.count > 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ export const InventoryProductCard = ({
   };
 
   return (
-    <Card className={isInventoriedToday ? "border-green-500" : "border-red-200"}>
+    <Card className={hasOrder ? "border-blue-500" : "border-gray-200"}>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
@@ -38,10 +38,10 @@ export const InventoryProductCard = ({
             <p className="text-sm text-gray-500">{product.category}</p>
           </div>
           <div className="mt-1">
-            {isInventoriedToday ? (
-              <CircleCheck className="h-5 w-5 text-green-500" />
+            {hasOrder ? (
+              <CircleCheck className="h-5 w-5 text-blue-500" />
             ) : (
-              <CircleX className="h-5 w-5 text-red-500" />
+              <CircleX className="h-5 w-5 text-gray-500" />
             )}
           </div>
         </div>
@@ -59,7 +59,7 @@ export const InventoryProductCard = ({
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-2">
             <div>
-              <Label htmlFor={`count-${product.id}`}>Cantitate:</Label>
+              <Label htmlFor={`count-${product.id}`}>Cantitate comandată:</Label>
               <Input
                 id={`count-${product.id}`}
                 type="number"
@@ -74,12 +74,12 @@ export const InventoryProductCard = ({
         ) : (
           <div className="py-2">
             <div className="flex justify-between">
-              <span className="font-medium">Cantitate:</span>
-              <span className="font-bold text-lg">{inventoryItem?.count || 0}</span>
+              <span className="font-medium">Cantitate comandată:</span>
+              <span className="font-bold text-lg">{orderItem?.count || 0}</span>
             </div>
-            {inventoryItem?.lastUpdated && (
+            {orderItem?.lastUpdated && (
               <div className="text-xs text-gray-500 mt-2">
-                Ultima actualizare: {formatInventoryDate(inventoryItem.lastUpdated)}
+                Ultima actualizare: {formatOrderDate(orderItem.lastUpdated)}
               </div>
             )}
           </div>
@@ -94,11 +94,11 @@ export const InventoryProductCard = ({
         ) : (
           <Button 
             onClick={() => setIsEditing(true)} 
-            variant={isInventoriedToday ? "outline" : "default"}
+            variant={hasOrder ? "outline" : "default"}
             className="w-full"
           >
             <Edit className="mr-2 h-4 w-4" />
-            {isInventoriedToday ? "Editează" : "Adaugă inventar"}
+            {hasOrder ? "Editează" : "Adaugă la comandă"}
           </Button>
         )}
       </CardFooter>
