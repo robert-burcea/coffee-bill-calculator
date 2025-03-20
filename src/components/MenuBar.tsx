@@ -13,7 +13,7 @@ export const MenuBar = ({ location }: MenuBarProps) => {
   const otherLocationName = location === "cantina" ? "Viva" : "Cantina";
 
   return (
-    <div className="flex flex-wrap gap-2 mb-4 items-center justify-between">
+    <div className="flex flex-wrap gap-2 mb-6 px-4 py-3 items-center justify-between bg-gray-50">
       <div className="flex items-center">
         <h1 className="text-xl font-bold">{locationName}</h1>
       </div>

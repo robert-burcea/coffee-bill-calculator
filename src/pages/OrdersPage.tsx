@@ -10,11 +10,13 @@ import {
   getOrdersStatus, 
   exportOrdersAsCSV,
   downloadFile,
-  checkAndResetOrders
+  checkAndResetOrders,
+  resetOrders
 } from "@/utils/orders";
 import { OrderProductCard } from "@/components/orders/OrderProductCard";
 import { OrderProgress } from "@/components/orders/OrderProgress";
 import { OrdersExport } from "@/components/orders/OrdersExport";
+import { ShoppingBasket } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface OrdersPageProps {
@@ -117,6 +119,16 @@ const OrdersPage = ({ location, category }: OrdersPageProps) => {
     });
   };
 
+  const handleResetOrders = () => {
+    resetOrders(location);
+    setOrders({});
+    setOrderStatus({ total: products.length, completed: 0 });
+    toast({
+      title: "Comenzi resetate",
+      description: "Toate comenzile au fost resetate."
+    });
+  };
+
   const categoryTitle = category ? ` - ${category.toUpperCase()}` : '';
 
   return (
@@ -124,7 +136,10 @@ const OrdersPage = ({ location, category }: OrdersPageProps) => {
       <MenuBar location={location} />
       
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">Comenzi {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
+        <div className="flex items-center mb-6">
+          <ShoppingBasket className="h-8 w-8 mr-3 text-green-600" />
+          <h1 className="text-2xl font-bold">Comenzi {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
+        </div>
         
         <OrderProgress
           total={orderStatus.total}
@@ -135,7 +150,7 @@ const OrdersPage = ({ location, category }: OrdersPageProps) => {
           <SearchBar onSearch={handleSearch} />
         </div>
         
-        <OrdersExport onExport={handleExportOrder} onFinalize={handleFinalizeOrder} />
+        <OrdersExport onExport={handleExportOrder} onFinalize={handleFinalizeOrder} onReset={handleResetOrders} />
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
           {filteredProducts.map(product => (

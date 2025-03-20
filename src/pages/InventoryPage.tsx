@@ -11,11 +11,14 @@ import {
   wasInventoriedToday,
   downloadFile,
   exportInventoryAsCSV,
-  checkAndResetInventory
+  checkAndResetInventory,
+  resetInventory
 } from "@/utils/inventory";
 import { InventoryProductCard } from "@/components/inventory/InventoryProductCard";
 import { InventoryProgress } from "@/components/inventory/InventoryProgress";
 import { InventoryExport } from "@/components/inventory/InventoryExport";
+import { ClipboardList } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface InventoryPageProps {
   location: "cantina" | "viva";
@@ -108,6 +111,16 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
       
     downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
   };
+  
+  const handleResetInventory = () => {
+    resetInventory(location);
+    setInventory({});
+    setInventoryStatus({ total: products.length, completed: 0 });
+    toast({
+      title: "Inventar resetat",
+      description: "Toate datele de inventar au fost resetate."
+    });
+  };
 
   const categoryTitle = category ? ` - ${category.toUpperCase()}` : '';
 
@@ -116,7 +129,10 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
       <MenuBar location={location} />
       
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">Inventar {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
+        <div className="flex items-center mb-6">
+          <ClipboardList className="h-8 w-8 mr-3 text-blue-600" />
+          <h1 className="text-2xl font-bold">Inventar {location === "cantina" ? "Cantina" : "Viva"}{categoryTitle}</h1>
+        </div>
         
         <InventoryProgress
           total={inventoryStatus.total}
@@ -127,7 +143,7 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
           <SearchBar onSearch={handleSearch} />
         </div>
         
-        <InventoryExport onExport={handleExportInventory} />
+        <InventoryExport onExport={handleExportInventory} onReset={handleResetInventory} />
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
           {filteredProducts.map(product => (

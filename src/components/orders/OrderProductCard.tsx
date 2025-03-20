@@ -30,7 +30,7 @@ export const OrderProductCard = ({
   };
 
   return (
-    <Card className={hasOrder ? "border-blue-500" : "border-gray-200"}>
+    <Card className={hasOrder ? "border-green-500" : "border-gray-200"}>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
@@ -39,7 +39,7 @@ export const OrderProductCard = ({
           </div>
           <div className="mt-1">
             {hasOrder ? (
-              <CircleCheck className="h-5 w-5 text-blue-500" />
+              <CircleCheck className="h-5 w-5 text-green-500" />
             ) : (
               <CircleX className="h-5 w-5 text-gray-500" />
             )}
@@ -75,7 +75,7 @@ export const OrderProductCard = ({
           <div className="py-2">
             <div className="flex justify-between">
               <span className="font-medium">Cantitate comandată:</span>
-              <span className="font-bold text-lg">{orderItem?.count || 0}</span>
+              <span className="font-bold text-lg">{hasOrder ? orderItem?.count : ""}</span>
             </div>
             {orderItem?.lastUpdated && (
               <div className="text-xs text-gray-500 mt-2">

@@ -90,6 +90,10 @@ export const exportInventoryAsCSV = (location: "cantina" | "viva", category?: st
   const categorizedProducts: Record<string, Product[]> = {};
   
   products.forEach(product => {
+    // Only include products with inventory count > 0
+    const inventoryItem = inventory[product.id];
+    if (!inventoryItem || inventoryItem.count <= 0) return;
+    
     if (!categorizedProducts[product.category]) {
       categorizedProducts[product.category] = [];
     }
@@ -100,15 +104,17 @@ export const exportInventoryAsCSV = (location: "cantina" | "viva", category?: st
   let csv = "";
   
   Object.keys(categorizedProducts).forEach(category => {
+    if (categorizedProducts[category].length === 0) return; // Skip empty categories
+    
     csv += `CATEGORIE: ${category}\n`;
     csv += "Nume Produs,Cod Produs,Cod Identificare,Producător,Categorie,Pret,Cantitate,Data Actualizare\n";
     
     categorizedProducts[category].forEach(product => {
       const inventoryItem = inventory[product.id];
-      const count = inventoryItem ? inventoryItem.count : 0;
-      const lastUpdated = inventoryItem 
-        ? formatInventoryDate(inventoryItem.lastUpdated) 
-        : "Neinventariat";
+      if (!inventoryItem || inventoryItem.count <= 0) return; // Extra check
+      
+      const count = inventoryItem.count;
+      const lastUpdated = formatInventoryDate(inventoryItem.lastUpdated);
       
       csv += `"${product.name}","${product.barcode || ''}","${product.identificationCode || ''}","${product.producer || ''}","${product.category}",${product.price},${count},"${lastUpdated}"\n`;
     });
