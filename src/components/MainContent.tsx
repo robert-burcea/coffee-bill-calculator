@@ -1,3 +1,4 @@
+
 import { Product, BillItem, Bill } from "@/types";
 import { ProductGrid } from "@/components/ProductGrid";
 import { CurrentBill } from "@/components/CurrentBill";
