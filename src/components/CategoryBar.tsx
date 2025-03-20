@@ -31,7 +31,7 @@ export const CategoryBar = ({
               >
                 <Link to={`/${location}-inventory/${selectedCategory.toLowerCase()}`}>
                   <ClipboardCheck className="mr-1 h-3 w-3" />
-                  Inventar {selectedCategory}
+                  Inventar
                 </Link>
               </Button>
               <Button
@@ -42,7 +42,7 @@ export const CategoryBar = ({
               >
                 <Link to={`/${location}-orders/${selectedCategory.toLowerCase()}`}>
                   <ShoppingCart className="mr-1 h-3 w-3" />
-                  Comenzi {selectedCategory}
+                  Comenzi
                 </Link>
               </Button>
             </>
