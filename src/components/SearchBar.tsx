@@ -17,8 +17,13 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
     }
   }, [searchTerm, onSearch]);
 
+  // Prevent form submission which causes page navigation
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
-    <form className="w-full px-2 sm:px-4 py-2 sm:py-4">
+    <form onSubmit={handleSubmit} className="w-full px-2 sm:px-4 py-2 sm:py-4">
       <Input
         type="text"
         name="search"
@@ -26,6 +31,12 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Caută după nume, cod de bare..."
         className="w-full max-w-full"
+        // Prevent Enter key from submitting the form
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
       />
     </form>
   );
