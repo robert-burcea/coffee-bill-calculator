@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Product, BillItem, Bill } from "@/types";
 import { MenuBar } from "@/components/MenuBar";
@@ -26,16 +25,17 @@ const Index = ({ location }: IndexProps) => {
   const [confirmClearDay, setConfirmClearDay] = useState(false);
   const [confirmDeleteLast, setConfirmDeleteLast] = useState(false);
 
-  const { handleCheckout, handleClearDay, handleDeleteLastBill } = useBillOperations({
-    bills,
-    setBills,
-    currentBill,
-    setCurrentBill,
-    location,
-    setIsSheetOpen,
-    setConfirmClearDay,
-    setConfirmDeleteLast,
-  });
+  const { handleCheckout, handleClearDay, handleDeleteLastBill } =
+    useBillOperations({
+      bills,
+      setBills,
+      currentBill,
+      setCurrentBill,
+      location,
+      setIsSheetOpen,
+      setConfirmClearDay,
+      setConfirmDeleteLast,
+    });
 
   const handleProductClick = (product: Product) => {
     setCurrentBill((prev) => {
@@ -56,7 +56,14 @@ const Index = ({ location }: IndexProps) => {
   };
 
   const CATEGORIES = {
-    cantina: ["MENIURI", "BAUTURI", "MIC DEJUN", "PATISERIE", "SNACKS"],
+    cantina: [
+      "MENIURI",
+      "BAUTURI",
+      "MIC DEJUN",
+      "PATISERIE",
+      "SNACKS",
+      "FRESH",
+    ],
     viva: ["CAFEA", "BAUTURI", "DESERT"],
   };
 
