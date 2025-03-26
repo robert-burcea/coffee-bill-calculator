@@ -995,14 +995,6 @@ export const initializeProducts = (location: "cantina" | "viva") => {
       barcode: "4014400901191",
     },
     {
-      id: "114",
-      name: "merci asorted",
-      price: 35,
-      category: "SNACKS",
-      location: "cantina",
-      barcode: "4014400901191",
-    },
-    {
       id: "115",
       name: "pergale dark classic",
       price: 20,
