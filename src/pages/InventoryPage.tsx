@@ -7,6 +7,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { 
   getInventory, 
   updateProductInventory, 
+  addToProductInventory,
   getInventoryStatus, 
   wasInventoriedToday,
   exportInventoryAsCSV,
@@ -97,6 +98,33 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
       : getInventoryStatus(location);
     setInventoryStatus(status);
   };
+  
+  const handleAddToInventory = (productId: string, additionalCount: number) => {
+    addToProductInventory(location, productId, additionalCount);
+    
+    // Update local state
+    const currentCount = inventory[productId]?.count || 0;
+    const updatedInventory = { 
+      ...inventory,
+      [productId]: {
+        productId,
+        count: currentCount + additionalCount,
+        lastUpdated: Date.now()
+      }
+    };
+    setInventory(updatedInventory);
+    
+    toast({
+      title: "Cantitate adăugată",
+      description: `${additionalCount} buc au fost adăugate la inventar.`
+    });
+    
+    // Update inventory status
+    const status = category 
+      ? getInventoryStatus(location, category.toUpperCase())
+      : getInventoryStatus(location);
+    setInventoryStatus(status);
+  };
 
   const handleExportInventory = () => {
     if (category) {
@@ -151,6 +179,7 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
               product={product}
               inventoryItem={inventory[product.id]}
               onUpdate={handleUpdateInventory}
+              onAdd={handleAddToInventory}
             />
           ))}
           

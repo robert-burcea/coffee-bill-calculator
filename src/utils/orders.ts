@@ -69,7 +69,7 @@ export const exportOrdersAsCSV = (location: "cantina" | "viva", category?: strin
   
   // Filter by category if specified
   const products = category 
-    ? allProducts.filter(p => p.category === category)
+    ? allProducts.filter(p => p.category === category.toUpperCase())
     : allProducts;
     
   const orders = getOrders(location);

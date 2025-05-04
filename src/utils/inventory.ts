@@ -1,4 +1,3 @@
-
 import { InventoryData, InventoryItem, Product } from "@/types";
 import { getProducts } from "./storage";
 import * as XLSX from 'xlsx';
@@ -64,7 +63,7 @@ export const getInventoryStatus = (location: "cantina" | "viva", category?: stri
   
   // Filter by category if specified
   const products = category 
-    ? allProducts.filter(p => p.category === category)
+    ? allProducts.filter(p => p.category === category.toUpperCase())
     : allProducts;
     
   const inventory = getInventory(location);
@@ -107,7 +106,7 @@ export const exportInventoryAsCSV = (location: "cantina" | "viva", category?: st
   
   // Filter by category if specified
   const products = category 
-    ? allProducts.filter(p => p.category === category)
+    ? allProducts.filter(p => p.category === category.toUpperCase())
     : allProducts;
     
   const inventory = getInventory(location);
@@ -200,4 +199,3 @@ export const checkAndResetInventory = (location: "cantina" | "viva"): void => {
     localStorage.setItem(`${location}_inventory_last_reset`, today.getTime().toString());
   }
 };
-
