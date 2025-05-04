@@ -33,6 +33,31 @@ export const updateProductInventory = (
   saveInventory(location, inventory);
 };
 
+// Add quantity to an existing inventory item
+export const addToProductInventory = (
+  location: "cantina" | "viva", 
+  productId: string,
+  additionalCount: number
+): void => {
+  const inventory = getInventory(location);
+  
+  if (inventory[productId]) {
+    inventory[productId] = {
+      productId,
+      count: inventory[productId].count + additionalCount,
+      lastUpdated: Date.now(),
+    };
+  } else {
+    inventory[productId] = {
+      productId,
+      count: additionalCount,
+      lastUpdated: Date.now(),
+    };
+  }
+  
+  saveInventory(location, inventory);
+};
+
 // Get a count of how many products need inventory
 export const getInventoryStatus = (location: "cantina" | "viva", category?: string): { total: number; completed: number } => {
   const allProducts = getProducts(location).filter(p => !p.hidden && p.location === location);
@@ -175,3 +200,4 @@ export const checkAndResetInventory = (location: "cantina" | "viva"): void => {
     localStorage.setItem(`${location}_inventory_last_reset`, today.getTime().toString());
   }
 };
+
