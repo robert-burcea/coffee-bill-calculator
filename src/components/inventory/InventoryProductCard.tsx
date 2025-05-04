@@ -5,7 +5,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Edit, Save, CircleCheck, CircleX } from "lucide-react";
+import { Edit, Save, CircleCheck, CircleX, Plus } from "lucide-react";
 import { wasInventoriedToday, formatInventoryDate } from "@/utils/inventory";
 
 interface InventoryProductCardProps {
@@ -22,11 +22,22 @@ export const InventoryProductCard = ({
   const [isEditing, setIsEditing] = useState(false);
   const [count, setCount] = useState(inventoryItem?.count || 0);
   const isInventoriedToday = wasInventoriedToday(inventoryItem);
+  const currentCount = inventoryItem?.count || 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdate(product.id, count);
     setIsEditing(false);
+  };
+
+  const handleAddMore = () => {
+    const additionalAmount = window.prompt("Cantitatea adăugată:", "1");
+    if (additionalAmount !== null) {
+      const amount = parseInt(additionalAmount);
+      if (!isNaN(amount) && amount > 0) {
+        onUpdate(product.id, currentCount + amount);
+      }
+    }
   };
 
   return (
@@ -85,21 +96,33 @@ export const InventoryProductCard = ({
           </div>
         )}
       </CardContent>
-      <CardFooter className="pt-2 pb-4">
+      <CardFooter className="pt-2 pb-4 flex gap-2">
         {isEditing ? (
           <Button onClick={handleSubmit} variant="default" className="w-full">
             <Save className="mr-2 h-4 w-4" />
             Salvează
           </Button>
         ) : (
-          <Button 
-            onClick={() => setIsEditing(true)} 
-            variant={isInventoriedToday ? "outline" : "default"}
-            className="w-full"
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            {isInventoriedToday ? "Editează" : "Adaugă inventar"}
-          </Button>
+          <>
+            <Button 
+              onClick={() => setIsEditing(true)} 
+              variant={isInventoriedToday ? "outline" : "default"}
+              className="flex-1"
+            >
+              <Edit className="mr-2 h-4 w-4" />
+              {isInventoriedToday ? "Editează" : "Adaugă inventar"}
+            </Button>
+            {isInventoriedToday && (
+              <Button 
+                onClick={handleAddMore} 
+                variant="secondary" 
+                className="flex-1"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Adaugă
+              </Button>
+            )}
+          </>
         )}
       </CardFooter>
     </Card>

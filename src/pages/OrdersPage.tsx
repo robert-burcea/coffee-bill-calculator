@@ -9,7 +9,6 @@ import {
   updateProductOrder, 
   getOrdersStatus, 
   exportOrdersAsCSV,
-  downloadFile,
   checkAndResetOrders,
   resetOrders
 } from "@/utils/orders";
@@ -99,16 +98,16 @@ const OrdersPage = ({ location, category }: OrdersPageProps) => {
   };
 
   const handleExportOrder = () => {
-    const csvContent = category 
-      ? exportOrdersAsCSV(location, category.toUpperCase())
-      : exportOrdersAsCSV(location);
+    if (category) {
+      exportOrdersAsCSV(location, category.toUpperCase());
+    } else {
+      exportOrdersAsCSV(location);
+    }
     
-    const today = new Date().toISOString().split('T')[0];
-    const filename = category 
-      ? `comanda_${location}_${category}_${today}.csv`
-      : `comanda_${location}_${today}.csv`;
-      
-    downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
+    toast({
+      title: "Export completat",
+      description: "Fișierul XLSX cu comenzile a fost generat."
+    });
   };
   
   const handleFinalizeOrder = () => {

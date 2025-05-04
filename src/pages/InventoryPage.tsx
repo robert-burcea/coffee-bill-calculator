@@ -9,7 +9,6 @@ import {
   updateProductInventory, 
   getInventoryStatus, 
   wasInventoriedToday,
-  downloadFile,
   exportInventoryAsCSV,
   checkAndResetInventory,
   resetInventory
@@ -100,16 +99,16 @@ const InventoryPage = ({ location, category }: InventoryPageProps) => {
   };
 
   const handleExportInventory = () => {
-    const csvContent = category 
-      ? exportInventoryAsCSV(location, category.toUpperCase())
-      : exportInventoryAsCSV(location);
+    if (category) {
+      exportInventoryAsCSV(location, category.toUpperCase());
+    } else {
+      exportInventoryAsCSV(location);
+    }
     
-    const today = new Date().toISOString().split('T')[0];
-    const filename = category 
-      ? `inventar_${location}_${category}_${today}.csv`
-      : `inventar_${location}_${today}.csv`;
-      
-    downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
+    toast({
+      title: "Export completat",
+      description: "Fișierul XLSX cu inventarul a fost generat."
+    });
   };
   
   const handleResetInventory = () => {

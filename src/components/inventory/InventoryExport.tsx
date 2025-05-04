@@ -17,7 +17,7 @@ export const InventoryExport = ({ onExport, onReset }: InventoryExportProps) => 
       <div className="flex justify-end gap-2">
         <Button onClick={onExport} variant="outline" className="gap-2">
           <Download className="h-4 w-4" />
-          Exportă inventar (CSV)
+          Exportă inventar (XLSX)
         </Button>
         <Button 
           onClick={() => setShowResetConfirm(true)} 
