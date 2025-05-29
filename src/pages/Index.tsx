@@ -63,6 +63,7 @@ const Index = ({ location }: IndexProps) => {
       "PATISERIE",
       "SNACKS",
       "FRESH",
+      "CONSUMABILE",
     ],
     viva: ["CAFEA", "BAUTURI", "DESERT"],
   };
