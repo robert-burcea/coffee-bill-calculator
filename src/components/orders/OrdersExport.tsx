@@ -22,7 +22,7 @@ export const OrdersExport = ({ onExport, onFinalize, onReset }: OrdersExportProp
         </Button>
         <Button onClick={onExport} variant="outline" className="gap-2">
           <Download className="h-4 w-4" />
-          Exportă comanda (CSV)
+          Exportă comanda (XLSX)
         </Button>
         <Button 
           onClick={() => setShowResetConfirm(true)} 

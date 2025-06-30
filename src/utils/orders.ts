@@ -1,6 +1,7 @@
 
 import { OrderData, OrderItem, Product } from "@/types";
 import { getProducts } from "./storage";
+import * as XLSX from 'xlsx';
 
 // Get orders for a specific location
 export const getOrders = (location: "cantina" | "viva"): OrderData => {
@@ -62,13 +63,13 @@ export const formatOrderDate = (timestamp: number): string => {
   });
 };
 
-// Export orders data as CSV grouped by category
-export const exportOrdersAsCSV = (location: "cantina" | "viva", category?: string): string => {
+// Export orders data as XLSX
+export const exportOrdersAsCSV = (location: "cantina" | "viva", category?: string): void => {
   const allProducts = getProducts(location).filter(p => !p.hidden && p.location === location);
   
   // Filter by category if specified
   const products = category 
-    ? allProducts.filter(p => p.category === category)
+    ? allProducts.filter(p => p.category === category.toUpperCase())
     : allProducts;
     
   const orders = getOrders(location);
@@ -87,39 +88,52 @@ export const exportOrdersAsCSV = (location: "cantina" | "viva", category?: strin
     categorizedProducts[product.category].push(product);
   });
   
-  // Create CSV with category headers
-  let csv = "";
+  // Create workbook
+  const wb = XLSX.utils.book_new();
   
   Object.keys(categorizedProducts).forEach(category => {
     if (categorizedProducts[category].length === 0) return; // Skip empty categories
     
-    csv += `CATEGORIE: ${category}\n`;
-    csv += "Nume Produs,Cod Produs,Cod Identificare,Producător,Categorie,Pret,Cantitate Comandata,Data Actualizare\n";
+    // Create data for this category sheet
+    const data = [
+      ["Nume Produs", "Cantitate Comandata"] // Simplified columns
+    ];
     
     categorizedProducts[category].forEach(product => {
       const orderItem = orders[product.id];
-      if (!orderItem || orderItem.count <= 0) return; // Extra check
+      if (!orderItem || orderItem.count <= 0) return;
       
-      const count = orderItem.count;
-      const lastUpdated = formatOrderDate(orderItem.lastUpdated);
-      
-      csv += `"${product.name}","${product.barcode || ''}","${product.identificationCode || ''}","${product.producer || ''}","${product.category}",${product.price},${count},"${lastUpdated}"\n`;
+      data.push([
+        product.name,
+        orderItem.count
+      ]);
     });
     
-    csv += "\n"; // Add empty line between categories
+    // Only create sheet if there's data beyond the header
+    if (data.length > 1) {
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      
+      // Adjust column widths
+      const colWidths = [
+        { wch: 40 }, // Product name
+        { wch: 10 }  // Quantity
+      ];
+      
+      ws['!cols'] = colWidths;
+      
+      // Add sheet to workbook (clean category name for sheet name)
+      const safeSheetName = category.replace(/[\\/*[\]?:]/g, '_').substring(0, 31);
+      XLSX.utils.book_append_sheet(wb, ws, safeSheetName);
+    }
   });
   
-  return csv;
-};
-
-// Download a file (CSV/PDF)
-export const downloadFile = (content: string, fileName: string, contentType: string): void => {
-  const a = document.createElement("a");
-  const file = new Blob([content], { type: contentType });
-  a.href = URL.createObjectURL(file);
-  a.download = fileName;
-  a.click();
-  URL.revokeObjectURL(a.href);
+  // Generate Excel file and trigger download
+  const today = new Date().toISOString().split('T')[0];
+  const filename = category 
+    ? `comanda_${location}_${category}_${today}.xlsx`
+    : `comanda_${location}_${today}.xlsx`;
+    
+  XLSX.writeFile(wb, filename);
 };
 
 // Reset orders for a location
